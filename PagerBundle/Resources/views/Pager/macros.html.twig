@@ -4,7 +4,7 @@
 {% macro paginate(pager, attributs) %}
 
     <div class="gloomy-pagination">
-    
+
         {% if pager.pages.first not in pager.pages.pagesInRange %}
             <a {{ attributs|raw }} href="{{ pager.path(pager.pages.first) }}">{{ pager.pages.first }}</a>
         {% endif %}
@@ -26,7 +26,7 @@
         {% endif %}
 
         / <a {{ attributs|raw }} href="{{ pager.path(pager.pages.last) }}">{{ pager.pages.last }}</a>
-        
+
     </div>
 
 {% endmacro %}

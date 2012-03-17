@@ -106,22 +106,15 @@
 //        }
 
         if ( select.val() == 'null' || select.val() == 'notNull' ) {
-            input[0].value              = '';
-            input[0].style.borderColor  = 'red';
-            input[0].readOnly           = true;
-
+        	input.attr('class', 'gloomy-filters notNullFilter');
             clear[0].style.visibility   = 'hidden';
         }
         else if ( input.val() ) {
-            input[0].style.borderColor  = '#00FF40';
-            input[0].readOnly           = false;
-
+        	input.attr('class', 'gloomy-filters textFilter');
             clear[0].style.visibility   = 'visible';
         }
         else {
-            input[0].style.borderColor  = '#C9C9C9';
-            input[0].readOnly           = false;
-
+        	input.attr('class', 'gloomy-filters');
             clear[0].style.visibility   = 'hidden';
         }
 
