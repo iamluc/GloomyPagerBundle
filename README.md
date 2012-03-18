@@ -16,17 +16,17 @@ Characteristics are :
 
 - Advanced filtering (AND/OR);
 
-    $filters   = array( 'operator'    => 'and',
-                        'criteria'    => array( array(  'field' => 'job', 'operator' => 'contains', 'value' => 'Director' ),
-                                                array(  'operator'    => 'or',
-                                                        'criteria'    => array(
-                                                                array( 'field' => 'firstname', 'operator' => 'contains', 'value' => 'y' ),
-                                                                array( 'field' => 'moviesNb', 'operator' => 'less', 'value' => 30 ),
-
-                                                        )
-                                                    )
-                                                )
-                        );
+>     $filters   = array( 'operator'    => 'and',
+>                        'criteria'    => array( array(  'field' => 'job', 'operator' => 'contains', 'value' => 'Director' ),
+>                                                array(  'operator'    => 'or',
+>                                                        'criteria'    => array(
+>                                                                array( 'field' => 'firstname', 'operator' => 'contains', 'value' => 'y' ),
+>                                                                array( 'field' => 'moviesNb', 'operator' => 'less', 'value' => 30 ),
+>
+>                                                        )
+>                                                    )
+>                                                )
+>                        );
 
 - Multiples ordering (order by lastname asc, firstname asc)
 - Ajax compatible
@@ -106,16 +106,18 @@ TWIG
 INSTALLATION
 ------------
 
-NOTE :
-the bundle requires Zend_Paginator (from Zend Framework 2 Minimal)
-the QueryBuilderWraper works better with Doctrine 2.2
+###NOTE :
+* the bundle requires Zend_Paginator (from Zend Framework 2 Minimal)
+* the QueryBuilderWraper works better with Doctrine 2.2
 
 
 1) Download the bundle (https://github.com/iamluc/Gloomy) in vendor/bundles/
-You must have a tree similar to vendor/bundles/Gloomy/PagerBundle
+
+    You must have a tree similar to vendor/bundles/Gloomy/PagerBundle
 
 2) Download Zend Framework and uncompress it in vendor/
-You must have a tree similar to vendor/Zend/library/Zend
+
+    You must have a tree similar to vendor/Zend/library/Zend
 
 3) Add to app/autoload.php :
 
