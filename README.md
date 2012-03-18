@@ -15,8 +15,6 @@ It sits on top of PagerWrapper (Array and ORM QueryBuilder for now).
 Characteristics are :
 
 * Advanced filtering (AND/OR)
-
-    # exemple
     $filters   = array( 'operator'    => 'and',
                         'criteria'    => array( array(  'field' => 'job', 'operator' => 'contains', 'value' => 'Director' ),
                                                 array(  'operator'    => 'or',
