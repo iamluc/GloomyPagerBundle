@@ -14,8 +14,7 @@ It sits on top of PagerWrapper (Array and ORM QueryBuilder for now).
 
 Characteristics are :
 
-* Advanced filtering (AND/OR)
-
+- Advanced filtering (AND/OR)
 
     $filters   = array( 'operator'    => 'and',
                         'criteria'    => array( array(  'field' => 'job', 'operator' => 'contains', 'value' => 'Director' ),
@@ -29,9 +28,9 @@ Characteristics are :
                                                 )
                         );
 
-* Multiples ordering (order by lastname asc, firstname asc)
-* Ajax compatible
-* Many pager on the same page
+- Multiples ordering (order by lastname asc, firstname asc)
+- Ajax compatible
+- Many pager on the same page
 
 EXEMPLES
 --------
