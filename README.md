@@ -32,6 +32,9 @@ Characteristics are :
 - Ajax compatible
 - Many pager on the same page
 
+#LICENSE
+LGPL v2
+
 EXEMPLES
 --------
 
