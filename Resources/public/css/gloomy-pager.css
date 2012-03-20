@@ -1,0 +1,65 @@
+.gloomy-pagination {
+    float:                          right;
+    margin:                         10px 0;
+    padding:                        4px 7px;
+}
+
+.gloomy-pagination .active {
+    border:                         1px solid #595959;
+}
+
+table.gloomy-pager {
+    width:                          100%;
+}
+
+table.gloomy-pager thead tr th, table.gloomy-pager tfoot tr th {
+    background-color:               #e8e8e8;
+    padding:                        2px;
+}
+
+table.gloomy-pager tbody td {
+    border-bottom:                  1px solid #e8e8e8;
+}
+
+table.gloomy-pager tr:hover, table.gloomy-pager tr:hover td {
+    background-color: #f6f6f6;
+}
+
+.gloomy-filters {
+    width:                          100%;
+    display:                        inline;
+    border:                         1px solid #C9C9C9;
+}
+
+.gloomy-filters.textFilter {
+    border:                         1px solid #FF9A07;
+}
+
+.gloomy-filters.notNullFilter {
+    border:                         1px solid red;
+}
+
+.gloomy-filtersContainer {
+	display:                        none;
+    background-image:               url( ../images/transparent.gif );   /* Transparent image to prevent IE from launching "onmouseout" */
+    position:                       absolute;
+    padding:                        0px 10px 120px 10px;                /* Large padding-bottom to block mouseout */
+}
+
+.gloomy-filtersOptions {
+    padding:                        10px;
+    margin:                         0px;
+    position:                       relative;
+    background-color:               #DBDBDB;
+    border:                         1px solid #9E9E9E;
+    -moz-border-radius:             0px 0px 20px 20px;
+    opacity:                        0.8;
+    filter:                         alpha(opacity=80);
+    -ms-filter:                     "alpha(opacity=80)";
+}
+
+.gloomy-clearFilters {
+    position:                       relative;
+    left:                           -23px;
+    top:                            1px;
+}
