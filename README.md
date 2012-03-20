@@ -6,13 +6,12 @@ ABOUT
 
 The GloomyPagerBundle allows you to display datas with pagination, and to easily order and filter them.
 
-Test it on http://iamluc.legtux.org/web/demo1
+**Test it on http://iamluc.legtux.org/web/demo1**
 
 (You can download the demonstration website at https://github.com/iamluc/DemoSite)
 
 It sits on top of PagerWrapper (Array and ORM QueryBuilder for now).
-
-Characteristics are :
+Features are :
 
 - Advanced filtering (AND/OR);
 
@@ -114,11 +113,11 @@ INSTALLATION
 * the QueryBuilderWraper works better with Doctrine 2.2
 
 
-1) Download the bundle (https://github.com/iamluc/Gloomy) in vendor/bundles/
+1) Download the bundle (https://github.com/iamluc/GloomyPagerBundle) in vendor/bundles/
 
     You must have a tree similar to vendor/bundles/Gloomy/PagerBundle
 
-2) Download Zend Framework and uncompress it in vendor/
+2) Download Zend Framework (http://packages.zendframework.com/) and uncompress it in vendor/
 
     You must have a tree similar to vendor/Zend/library/Zend
 
