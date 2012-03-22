@@ -113,7 +113,7 @@ INSTALLATION
 * the QueryBuilderWraper works better with Doctrine 2.2
 
 
-1) Download the bundle ([https://github.com/iamluc/GloomyPagerBundle](https://github.com/iamluc/GloomyPagerBundle)) in vendor/bundles/
+1) Download the bundle ([https://github.com/iamluc/GloomyPagerBundle](https://github.com/iamluc/GloomyPagerBundle)) in vendor/bundles/Gloomy (create if not exists) and rename the folder to PagerBundle
 
     You must have a tree similar to vendor/bundles/Gloomy/PagerBundle
 
