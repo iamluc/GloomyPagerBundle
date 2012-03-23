@@ -4,8 +4,16 @@
     padding:                        4px 7px;
 }
 
-.gloomy-pagination .active {
-    border:                         1px solid #595959;
+.gloomy-pagination a, .gloomy-pagination a:visited {
+  	border-radius: 					4px 4px 4px 4px;
+    padding: 						4px 7px;
+    text-decoration: 				none;
+	border: 						1px solid #E8E8E8;
+}
+
+.gloomy-pagination a.active {
+    border: 						1px solid #E8E8E8;
+    background-color: 				#DDDDDD;
 }
 
 table.gloomy-pager {
@@ -22,7 +30,7 @@ table.gloomy-pager tbody td {
 }
 
 table.gloomy-pager tr:hover, table.gloomy-pager tr:hover td {
-    background-color: #f6f6f6;
+    background-color: 				#f6f6f6;
 }
 
 .gloomy-filters {

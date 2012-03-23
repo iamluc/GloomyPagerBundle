@@ -109,27 +109,30 @@ INSTALLATION
 ------------
 
 ###NOTE :
-* the bundle requires Zend_Paginator (from Zend Framework 2 Minimal)
 * the QueryBuilderWraper works better with Doctrine 2.2
 
 
-1) Download the bundle ([https://github.com/iamluc/GloomyPagerBundle](https://github.com/iamluc/GloomyPagerBundle)) in vendor/bundles/Gloomy (create if not exists) and rename the folder to PagerBundle
+1) Download the bundle
+
+**Using deps file**
+Add to deps file
+>[GloomyPagerBundle]
+>    git=git://github.com/iamluc/GloomyPagerBundle
+>    target=bundles/Gloomy/PagerBundle
+
+**OR downloading from github**
+Download the bundle ([https://github.com/iamluc/GloomyPagerBundle](https://github.com/iamluc/GloomyPagerBundle)) in vendor/bundles/Gloomy (create if not exists) and rename the folder to PagerBundle
 
     You must have a tree similar to vendor/bundles/Gloomy/PagerBundle
 
-2) Download Zend Framework ([http://packages.zendframework.com](http://packages.zendframework.com)) and uncompress it in vendor/
+2) Add to app/autoload.php :
 
-    You must have a tree similar to vendor/Zend/library/Zend
-
-3) Add to app/autoload.php :
-
-    'Zend'             => __DIR__.'/../vendor/Zend/library',
     'Gloomy'           => __DIR__.'/../vendor/bundles',
 
 4) Add to app/AppKernel.php
 
     new Gloomy\PagerBundle\GloomyPagerBundle(),
 
-5) Install assets
+5) Install assets (Optional)
 
     php app/console assets:install web

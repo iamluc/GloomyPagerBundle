@@ -3,25 +3,45 @@
 namespace Gloomy\PagerBundle\Pager\Wrapper;
 
 use Gloomy\PagerBundle\Pager\Wrapper;
-use Gloomy\PagerBundle\Paginator\Adapter\QueryBuilderAdapter;
 
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
 
-class QueryBuilderWrapper extends QueryBuilderAdapter implements Wrapper
+class QueryBuilderWrapper implements Wrapper
 {
     static public $logicalAND   = array(array(array('o' => 'and')));
     static public $logicalOR    = array(array(array('o' => 'or')));
 
-    protected $_fields = null;
-    protected $_config = null;
+    protected $_builder = null;
+    protected $_count   = null;
+    protected $_fields  = null;
+    protected $_config  = null;
 
     public function __construct(QueryBuilder $builder, $fields = array(), $config = array())
     {
-        parent::__construct($builder);
+        $this->_builder = $builder;
+        $this->_fields  = $fields;
+        $this->_config  = $config;
+    }
 
-        $this->_fields = $fields;
-        $this->_config = $config;
+    public function count()
+    {
+        if (is_null($this->_count)) {
+            $builder        = clone $this->_builder;
+            $this->_count   = $builder->select('COUNT('.$this->getDefaultAlias().')')
+            ->getQuery()
+            ->getSingleScalarResult();
+        }
+
+        return $this->_count;
+    }
+
+    public function getItems($offset, $itemCountPerPage)
+    {
+        return $this->_builder->setFirstResult($offset)
+        ->setMaxResults($itemCountPerPage)
+        ->getQuery()
+        ->getResult();
     }
 
     public function setOrderBy(array $orderBy)
@@ -221,5 +241,11 @@ class QueryBuilderWrapper extends QueryBuilderAdapter implements Wrapper
         else {
             return $this->getDefaultAlias().'.'.$alias;
         }
+    }
+
+    protected function getDefaultAlias()
+    {
+        $from           = current($this->_builder->getDQLPart('from'));
+        return $from->getAlias();
     }
 }

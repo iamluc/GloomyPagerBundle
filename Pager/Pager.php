@@ -2,11 +2,7 @@
 
 namespace Gloomy\PagerBundle\Pager;
 
-//use Symfony\Component\HttpFoundation\Request;
-
 use Doctrine\ORM\QueryBuilder;
-
-use Zend\Paginator\Paginator;
 
 use Gloomy\PagerBundle\Pager\Wrapper;
 use Gloomy\PagerBundle\Pager\Wrapper\ArrayWrapper;
@@ -16,7 +12,7 @@ use Gloomy\PagerBundle\Pager\Wrapper\QueryBuilderWrapper;
 class Pager
 {
     /**
-     * @var \Zend\Paginator\Paginator\Paginator
+     * Paginator
      */
     protected $_paginator;
 
@@ -41,14 +37,14 @@ class Pager
     protected $_route;
 
     /**
-     * Données à ajouter dans l'URL
+     * Datas to append to URL
      */
     protected $_addToURL;
 
     public function __construct($request, $router, $items, $route = null, array $config = array(), array $addToURL = array())
     {
         /**
-         * Initialisation des variables du pager (Gère plusieurs pagers sur une même page)
+         * Initialize pager
          */
         static $pagerNum;
 
@@ -60,10 +56,10 @@ class Pager
 
                                         'pageRange'             => 5,
                                         'itemsPerPage'          => 10,
-                                        'itemsPerPageChoices'   => array( 10, 20, 100, 500, 1000 )
+                                        'itemsPerPageChoices'   => array(10, 20, 100, 500, 1000)
                                         );
         $this->_config      = array_merge($defaultConfig, $config);
-        if ( ! in_array( $this->_config['itemsPerPage'], $this->_config['itemsPerPageChoices'] ) ) {
+        if (! in_array($this->_config['itemsPerPage'], $this->_config['itemsPerPageChoices'])) {
             $this->_config['itemsPerPageChoices'][]    = $this->_config['itemsPerPage'];
             sort( $this->_config['itemsPerPageChoices'] );
         }
@@ -74,12 +70,17 @@ class Pager
         $this->_addToURL    = $addToURL;
 
         /**
-         * Création du Wrapper
+         * Create Wrapper
          */
         $wrapper            = $this->createWrapper($items);
 
         /**
-         * Création du Paginator
+         * Create Paginator
+         *
+         * Note : Could be a Zend\Paginator\Paginator if the wrappers implements Zend\Paginator\Adapter
+         * But to avoid an hard dependy to Zend Framework, we use our own compatible class
+         * (1 file of 200 lines instead of 20 Mo package)
+         *
          */
         $this->_paginator   = new Paginator($wrapper);
         $this->_paginator->setCurrentPageNumber((int) $this->getValue('pageVar', 1));
@@ -103,7 +104,7 @@ class Pager
         }
 
         /**
-         * Gestion des tris et des filtres
+         * Sorting & filtering
          */
         $orderBy            = $this->getValue('orderByVar');
         if (is_array($orderBy)) {

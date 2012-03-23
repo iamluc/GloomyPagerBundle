@@ -2,10 +2,12 @@
 
 namespace Gloomy\PagerBundle\Pager;
 
-use Zend\Paginator\Adapter;
+use \Countable;
 
-interface Wrapper extends Adapter
+interface Wrapper extends Countable
 {
+    public function getItems($offset, $itemCountPerPage); // like Zend\Paginator\Adapter, but we don't want hard dependency
+
     public function setOrderBy(array $orderBy);
 
     public function setFilters(array $fields, array $values, array $operators = array(), array $logical = array());

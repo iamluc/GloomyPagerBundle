@@ -2,24 +2,34 @@
 
 namespace Gloomy\PagerBundle\Pager\Wrapper;
 
-use Zend\Paginator\Adapter\ArrayAdapter;
-
 use Gloomy\PagerBundle\Pager\Wrapper;
 
-class ArrayWrapper extends ArrayAdapter implements Wrapper
+class ArrayWrapper implements Wrapper
 {
     static public $logicalAND   = array(array(array('o' => 'and')));
     static public $logicalOR    = array(array(array('o' => 'or')));
 
+    protected $_array  = null;
+    protected $_count  = null;
     protected $_fields = null;
     protected $_config = null;
 
     public function __construct(array $array, $fields = array(), $config = array())
     {
-        parent::__construct($array);
-
+        $this->_array  = $array;
+        $this->_count  = count($array);
         $this->_fields = $fields;
         $this->_config = $config;
+    }
+
+    public function count()
+    {
+        return $this->_count;
+    }
+
+    public function getItems($offset, $itemCountPerPage)
+    {
+        return array_slice($this->_array, $offset, $itemCountPerPage);
     }
 
     public function setOrderBy(array $orderBy)
