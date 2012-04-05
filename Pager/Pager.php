@@ -2,12 +2,7 @@
 
 namespace Gloomy\PagerBundle\Pager;
 
-use Doctrine\ORM\QueryBuilder;
-
 use Gloomy\PagerBundle\Pager\Wrapper;
-use Gloomy\PagerBundle\Pager\Wrapper\ArrayWrapper;
-use Gloomy\PagerBundle\Pager\Wrapper\NullWrapper;
-use Gloomy\PagerBundle\Pager\Wrapper\QueryBuilderWrapper;
 
 class Pager
 {
@@ -15,6 +10,11 @@ class Pager
      * Paginator
      */
     protected $_paginator;
+
+    /**
+     * Wrapper
+     */
+    protected $_wrapper;
 
     /**
      * @var \Symfony\Component\HttpFoundation\Request
@@ -41,7 +41,7 @@ class Pager
      */
     protected $_addToURL;
 
-    public function __construct($request, $router, $items, $route = null, array $config = array(), array $addToURL = array())
+    public function __construct($request, $router, Wrapper $wrapper, $route = null, array $config = array(), array $addToURL = array())
     {
         /**
          * Initialize pager
@@ -68,11 +68,25 @@ class Pager
         $this->_router      = $router;
         $this->_route       = $route;
         $this->_addToURL    = $addToURL;
+        $this->_wrapper     = $wrapper;
 
         /**
-         * Create Wrapper
+         * Sorting & filtering
          */
-        $wrapper            = $this->createWrapper($items);
+        $orderBy            = $this->getValue('orderByVar');
+        if (is_array($orderBy)) {
+            $this->_wrapper->setOrderBy($orderBy);
+        }
+
+        $filters            = $this->getValue('filtersVar');
+        if (is_array($filters)) {
+            $this->_wrapper->setFilters(
+                    $filters['f'],                                              // Le nom des champs
+                    $filters['v'],                                              // La valeur associée
+                    array_key_exists('o', $filters) ? $filters['o'] : array(),  // L'opérateur a utilisé
+                    array_key_exists('l', $filters) ? $filters['l'] : array()   // L'organisation logique (ET/OU)
+                    );
+        }
 
         /**
          * Create Paginator
@@ -82,45 +96,10 @@ class Pager
          * (1 file of 200 lines instead of 20 Mo package)
          *
          */
-        $this->_paginator   = new Paginator($wrapper);
+        $this->_paginator   = new Paginator($this->_wrapper);
         $this->_paginator->setCurrentPageNumber((int) $this->getValue('pageVar', 1));
         $this->_paginator->setItemCountPerPage((int) $this->getValue('itemsPerPageVar', $this->getConfig('itemsPerPage')));
         $this->_paginator->setPageRange((int) $this->getConfig('pageRange'));
-    }
-
-    protected function createWrapper($items)
-    {
-        if ($items instanceof Wrapper) {
-            $wrapper        = $items;
-        }
-        elseif ($items instanceof QueryBuilder) {
-            $wrapper        = new QueryBuilderWrapper($items);
-        }
-        elseif (is_array($items)) {
-            $wrapper        = new ArrayWrapper($items);
-        }
-        else {
-            $wrapper        = new NullWrapper((int) $items);
-        }
-
-        /**
-         * Sorting & filtering
-         */
-        $orderBy            = $this->getValue('orderByVar');
-        if (is_array($orderBy)) {
-            $wrapper->setOrderBy($orderBy);
-        }
-
-        $filters            = $this->getValue('filtersVar');
-        if (is_array($filters)) {
-            $wrapper->setFilters(   $filters['f'],                                              // Le nom des champs
-                                    $filters['v'],                                              // La valeur associée
-                                    array_key_exists('o', $filters) ? $filters['o'] : array(),  // L'opérateur a utilisé
-                                    array_key_exists('l', $filters) ? $filters['l'] : array()   // L'organisation logique (ET/OU)
-                                    );
-        }
-
-        return $wrapper;
     }
 
     public function getConfig($option)
@@ -151,6 +130,11 @@ class Pager
     public function setCurrentPageNumber($page)
     {
         $this->_paginator->setCurrentPageNumber($page);
+    }
+
+    public function getFields()
+    {
+        return $this->_wrapper->getFields();
     }
 
     public function getItems()

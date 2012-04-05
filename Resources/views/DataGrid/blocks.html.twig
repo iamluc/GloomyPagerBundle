@@ -1,0 +1,103 @@
+
+{% block datagrid %}
+    {{ datagrid_stylesheets(datagrid) }}
+    {{ datagrid_javascripts(datagrid) }}
+    {{ datagrid_content(datagrid) }}
+{% endblock %}
+
+
+{% block datagrid_stylesheets %}
+    <link href="{{ asset('bundles/gloomypager/css/gloomy-pager.css') }}" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+
+{% block datagrid_javascripts %}
+    <script src="{{ asset('bundles/gloomypager/js/gloomy-filters.js') }}" language="javascript"></script>
+{% endblock %}
+
+
+{% block datagrid_content %}
+    <form action="{{ datagrid.pager.pathForm() }}" method="post">
+        {{ datagrid_header(datagrid) }}
+        {{ datagrid_body(datagrid) }}
+        {{ datagrid_footer(datagrid) }}
+    </form>
+{% endblock %}
+
+
+{% block datagrid_header %}
+    <div class="gloomy-title">
+        <span style="float: right;">
+            <img src="{{ asset('bundles/gloomypager/images/loading.gif') }}" style="display: none;"/>
+
+            <span style="vertical-align: top;">
+                {{ datagrid_items_per_page(datagrid) }}
+            </span>
+
+            <a href="{{ datagrid.path() }}"><img src="{{ asset('bundles/gloomypager/images/refresh.png') }}" /></a>
+        </span>
+        <h1>{{ datagrid.title }}</h1>
+        <div style="clear: both"></div>
+    </div>
+{% endblock %}
+
+
+{% block datagrid_body %}
+    <table class="gloomy-pager">
+       <thead>
+           <tr>
+               {% for field in datagrid.fields %}
+                   <th>{{ datagrid_column_order_by(datagrid, field) }}</th>
+               {% endfor %}
+           </tr>
+           <tr>
+               {% for field in datagrid.fields %}
+                   <th>{{ datagrid_column_filter(datagrid, field) }}</th>
+               {% endfor %}
+           </tr>
+        </thead>
+        <tbody>
+            {% for item in datagrid.items %}
+               <tr>
+                   {% for field in datagrid.fields %}
+                       <td>{{ datagrid_column_value(datagrid, field, item) }}</td>
+                   {% endfor %}
+               </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+
+{% block datagrid_footer %}
+    {{ datagrid_paginate(datagrid) }}
+{% endblock %}
+
+
+{% block datagrid_paginate %}
+    {% import 'GloomyPagerBundle:Pager:macros.html.twig' as helper %}
+    {{ helper.paginate(datagrid.pager) }}
+{% endblock %}
+
+
+{% block datagrid_items_per_page %}
+    {% import 'GloomyPagerBundle:Pager:macros.html.twig' as helper %}
+    {{ helper.itemsPerPage(datagrid.pager) }}
+{% endblock %}
+
+
+{% block datagrid_column_order_by %}
+    {% import 'GloomyPagerBundle:Pager:macros.html.twig' as helper %}
+    {{ helper.orderBy(datagrid.pager, field.qualifier, field.label) }}
+{% endblock %}
+
+
+{% block datagrid_column_filter %}
+    {% import 'GloomyPagerBundle:Pager:macros.html.twig' as helper %}
+    {{ helper.filter(datagrid.pager, field.qualifier) }}
+{% endblock %}
+
+
+{% block datagrid_column_value %}
+    {{ datagrid_item_value(datagrid, field, item) }}
+{% endblock %}

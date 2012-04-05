@@ -3,6 +3,7 @@
 namespace Gloomy\PagerBundle\Pager\Wrapper;
 
 use Gloomy\PagerBundle\Pager\Wrapper;
+use Gloomy\PagerBundle\Pager\Field;
 
 class ArrayWrapper implements Wrapper
 {
@@ -20,11 +21,27 @@ class ArrayWrapper implements Wrapper
         $this->_count  = count($array);
         $this->_fields = $fields;
         $this->_config = $config;
+
+        if (empty($this->fields)) {
+            $this->populateFields();
+        }
+    }
+
+    protected function populateFields()
+    {
+        foreach (current($this->_array) as $key => $val) {
+            $this->_fields[$key] = new Field($key);
+        }
     }
 
     public function count()
     {
         return $this->_count;
+    }
+
+    public function getFields()
+    {
+        return $this->_fields;
     }
 
     public function getItems($offset, $itemCountPerPage)
@@ -225,10 +242,8 @@ class ArrayWrapper implements Wrapper
     protected function getField($alias)
     {
         if (array_key_exists($alias, $this->_fields)) {
-            return $this->_fields[$alias]['field'];
+            return $this->_fields[$alias]->getQualifier();;
         }
-        else {
-            return $alias;
-        }
+        throw new \Exception('Unknown alias '.$alias);
     }
 }

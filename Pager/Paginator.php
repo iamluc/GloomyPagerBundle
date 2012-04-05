@@ -137,13 +137,11 @@ class Paginator
         $pages->lastPageInRange  = max($pages->pagesInRange);
 
         // Item numbers
-        if ($this->getCurrentItems() !== null) {
-            $pages->currentItemCount = $this->getCurrentItemCount();
-            $pages->itemCountPerPage = $itemCountPerPage;
-            $pages->totalItemCount   = $this->_wrapper->count();
-            $pages->firstItemNumber  = (($currentPageNumber - 1) * $this->getItemCountPerPage()) + 1;
-            $pages->lastItemNumber   = $pages->firstItemNumber + $pages->currentItemCount - 1;
-        }
+        $pages->currentItemCount = $this->getCurrentItemCount();
+        $pages->itemCountPerPage = $itemCountPerPage;
+        $pages->totalItemCount   = $this->_wrapper->count();
+        $pages->firstItemNumber  = (($currentPageNumber - 1) * $this->getItemCountPerPage()) + 1;
+        $pages->lastItemNumber   = $pages->firstItemNumber + $pages->currentItemCount - 1;
 
         $this->_pages = $pages;
     }

@@ -63,7 +63,7 @@
 
 {% macro itemsPerPage(pager) %}
 
-    <select name="{{ pager.getConfig('itemsPerPageVar') }}" onchange="this.form.onsubmit();">
+    <select name="{{ pager.getConfig('itemsPerPageVar') }}" onchange="if (this.form.onsubmit) this.form.onsubmit(); else this.form.submit();">
         {% for nb in pager.getConfig('itemsPerPageChoices') %}
             <option value="{{ nb }}" {% if pager.itemsPerPage == nb %}selected="selected"{% endif %}>{{ nb }}</option>
         {% endfor %}

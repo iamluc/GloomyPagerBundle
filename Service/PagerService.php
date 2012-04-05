@@ -2,7 +2,14 @@
 
 namespace Gloomy\PagerBundle\Service;
 
+use Doctrine\ORM\QueryBuilder;
+
 use Gloomy\PagerBundle\Pager\Pager;
+
+use Gloomy\PagerBundle\Pager\Wrapper;
+use Gloomy\PagerBundle\Pager\Wrapper\ArrayWrapper;
+use Gloomy\PagerBundle\Pager\Wrapper\NullWrapper;
+use Gloomy\PagerBundle\Pager\Wrapper\QueryBuilderWrapper;
 
 class PagerService {
 
@@ -16,9 +23,25 @@ class PagerService {
         $this->_router      = $router;
     }
 
-    public function factory($items, $route = null, array $config = array(), array $addToURL = array())
+    public function factory($wrapper, $route = null, array $config = array(), array $addToURL = array())
     {
-        return new Pager($this->_request, $this->_router, $items, $route, $config, $addToURL);
+        if (!$wrapper instanceof Wrapper) {
+            if ($wrapper instanceof QueryBuilder) {
+                $wrapper    = new QueryBuilderWrapper($wrapper);
+            }
+            elseif (is_array($wrapper)) {
+                $wrapper    = new ArrayWrapper($wrapper);
+            }
+            else {
+                $wrapper    = new NullWrapper((int) $wrapper);
+            }
+        }
+
+        if (is_null($route)) {
+            $route = $this->_request->get('_route');
+        }
+
+        return new Pager($this->_request, $this->_router, $wrapper, $route, $config, $addToURL);
     }
 
     public function decodeFilters($filters)

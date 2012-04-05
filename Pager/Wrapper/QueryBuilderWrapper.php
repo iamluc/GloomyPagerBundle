@@ -3,6 +3,7 @@
 namespace Gloomy\PagerBundle\Pager\Wrapper;
 
 use Gloomy\PagerBundle\Pager\Wrapper;
+use Gloomy\PagerBundle\Pager\Field;
 
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
@@ -22,35 +23,63 @@ class QueryBuilderWrapper implements Wrapper
         $this->_builder = $builder;
         $this->_fields  = $fields;
         $this->_config  = $config;
+
+        if (empty($this->_fields)) {
+            $this->populateFields();
+        }
+    }
+
+    protected function populateFields()
+    {
+        $em = $this->_builder->getEntityManager();
+        $this->_builder->getRootEntities(); // Force rebuild 'from' part
+
+        $entities = array();
+        foreach ($this->_builder->getDQLPart('from') as $fromClause) {
+            $entities[$fromClause->getAlias()] = $fromClause->getFrom();
+        }
+
+        foreach ($entities as $alias => $entity) {
+            $metas = $em->getClassMetadata($entity);
+            foreach ($metas->columnNames as $column) {
+                $qualifier = $alias.'.'.$column;
+                $type = 'text';
+                $this->_fields[$qualifier] = new Field($column, $type, null, $qualifier);
+            }
+        }
     }
 
     public function count()
     {
         if (is_null($this->_count)) {
             $builder        = clone $this->_builder;
-            $this->_count   = $builder->select('COUNT('.$this->getDefaultAlias().')')
-            ->getQuery()
-            ->getSingleScalarResult();
+            $this->_count   = $builder->select('COUNT('.$builder->getRootAlias().')')
+                ->getQuery()
+                ->getSingleScalarResult();
         }
 
         return $this->_count;
     }
 
+    public function getFields()
+    {
+        return $this->_fields;
+    }
+
     public function getItems($offset, $itemCountPerPage)
     {
-        return $this->_builder->setFirstResult($offset)
-        ->setMaxResults($itemCountPerPage)
-        ->getQuery()
-        ->getResult();
+        return $this->_builder
+            ->setFirstResult($offset)
+            ->setMaxResults($itemCountPerPage)
+            ->getQuery()
+            ->getResult();
     }
 
     public function setOrderBy(array $orderBy)
     {
         $first    = true;
         foreach ($orderBy as $alias => $order) {
-
-            $sort    = $this->getFieldSql($alias);
-
+            $sort    = $this->getFieldQualifier($alias);
             if ($first) {
                 $this->_builder->orderBy($sort, $order);
                 $first = false;
@@ -59,7 +88,6 @@ class QueryBuilderWrapper implements Wrapper
                 $this->_builder->addOrderBy($sort, $order);
             }
         }
-
         return $this;
     }
 
@@ -79,7 +107,7 @@ class QueryBuilderWrapper implements Wrapper
 
         foreach ($fields as $key => $alias) {
 
-            $field      = $this->getFieldSql($alias);
+            $field      = $this->getFieldQualifier($alias);
             $value      = array_key_exists($key, $values) ? $values[$key] : '';
             $operator   = array_key_exists($key, $operators) ? $operators[$key] : 'contains';
             $paramName  = 'param'.++$paramNum;
@@ -230,22 +258,15 @@ class QueryBuilderWrapper implements Wrapper
         return $this;
     }
 
-    protected function getFieldSql($alias)
+    protected function getFieldQualifier($alias)
     {
-        if (array_key_exists($alias, $this->_fields)) {
-            return $this->_fields[$alias]['field'];
+        if (!array_key_exists($alias, $this->_fields)) {
+            $alias = $this->_builder->getRootAlias().'.'.$alias; // if alias does not exist, try with default object alias
         }
-        else if (strpos($alias, '.') !== false) {
-            return $alias;
-        }
-        else {
-            return $this->getDefaultAlias().'.'.$alias;
-        }
-    }
 
-    protected function getDefaultAlias()
-    {
-        $from           = current($this->_builder->getDQLPart('from'));
-        return $from->getAlias();
+        if (array_key_exists($alias, $this->_fields)) {
+            return $this->_fields[$alias]->getQualifier();
+        }
+        throw new \Exception('Unknown alias '.$alias);
     }
 }

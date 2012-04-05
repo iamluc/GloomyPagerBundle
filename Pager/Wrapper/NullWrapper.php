@@ -18,6 +18,11 @@ class NullWrapper implements Wrapper
         return $this->_count;
     }
 
+    public function getFields()
+    {
+        return array();
+    }
+
     /**
      * From Zend\Paginator\Adapter\Null
      */

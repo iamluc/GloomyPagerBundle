@@ -6,11 +6,11 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class GloomyExtension extends \Twig_Extension
 {
-    private $generator;
+    private $_generator;
 
     public function __construct(UrlGeneratorInterface $generator)
     {
-        $this->generator = $generator;
+        $this->_generator = $generator;
     }
 
     public function getName()

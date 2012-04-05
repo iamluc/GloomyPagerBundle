@@ -33,6 +33,12 @@ table.gloomy-pager tr:hover, table.gloomy-pager tr:hover td {
     background-color: 				#f6f6f6;
 }
 
+.gloomy-title h1 {
+	font-size: 						18px;
+	margin:							0px;
+	padding-left:					20px;
+}
+
 .gloomy-filters {
     width:                          100%;
     display:                        inline;
