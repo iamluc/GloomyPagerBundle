@@ -1,6 +1,11 @@
 GloomyPagerBundle
 =================
 
+NEW
+---
+
+Added datagrid (automatic pager templating)
+
 ABOUT
 -----
 
@@ -115,12 +120,17 @@ INSTALLATION
 1) Download the bundle
 
 **Using deps file**
+
 Add to deps file
->[GloomyPagerBundle]
->    git=git://github.com/iamluc/GloomyPagerBundle
->    target=bundles/Gloomy/PagerBundle
+
+```
+[GloomyPagerBundle]
+    git=git://github.com/iamluc/GloomyPagerBundle
+    target=bundles/Gloomy/PagerBundle
+```
 
 **OR downloading from github**
+
 Download the bundle ([https://github.com/iamluc/GloomyPagerBundle](https://github.com/iamluc/GloomyPagerBundle)) in vendor/bundles/Gloomy (create if not exists) and rename the folder to PagerBundle
 
     You must have a tree similar to vendor/bundles/Gloomy/PagerBundle
