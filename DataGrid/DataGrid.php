@@ -30,11 +30,11 @@ class DataGrid
         return $this->_pager;
     }
 
-    public function getFields()
+    public function getFields($all = false)
     {
         $fields = array();
         foreach ($this->getPager()->getFields() as $alias => $field) {
-            if ($field->isVisible()) {
+            if ($all || $field->isVisible()) {
                 $fields[$alias] = $field;
             }
         }
