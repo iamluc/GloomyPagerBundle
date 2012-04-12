@@ -18,6 +18,7 @@
 
 table.gloomy-pager {
     width:                          100%;
+    padding: 						0px 15px;
 }
 
 table.gloomy-pager thead tr th, table.gloomy-pager tfoot tr th {

@@ -10,6 +10,7 @@ use Gloomy\PagerBundle\Pager\Wrapper;
 use Gloomy\PagerBundle\Pager\Wrapper\ArrayWrapper;
 use Gloomy\PagerBundle\Pager\Wrapper\NullWrapper;
 use Gloomy\PagerBundle\Pager\Wrapper\QueryBuilderWrapper;
+use Gloomy\PagerBundle\Pager\Wrapper\EntityWrapper;
 
 class PagerService {
 
@@ -17,10 +18,13 @@ class PagerService {
 
     private $_router;
 
-    public function __construct($request, $router)
+    private $_entityManager;
+
+    public function __construct($request, $router, $entityManager)
     {
-        $this->_request     = $request;
-        $this->_router      = $router;
+        $this->_request       = $request;
+        $this->_router        = $router;
+        $this->_entityManager = $entityManager;
     }
 
     public function factory($wrapper, $route = null, array $config = array(), array $addToURL = array())
@@ -31,6 +35,9 @@ class PagerService {
             }
             elseif (is_array($wrapper)) {
                 $wrapper    = new ArrayWrapper($wrapper);
+            }
+            elseif (is_string($wrapper)) {
+                $wrapper    = new EntityWrapper($this->_entityManager, $wrapper);
             }
             else {
                 $wrapper    = new NullWrapper((int) $wrapper);

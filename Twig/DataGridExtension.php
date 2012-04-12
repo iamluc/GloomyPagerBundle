@@ -58,6 +58,10 @@ class DataGridExtension extends \Twig_Extension
             'datagrid_paginate'        => new \Twig_Function_Method($this, 'renderPaginate', array('is_safe' => array('html'))),
             'datagrid_items_per_page'  => new \Twig_Function_Method($this, 'renderItemsPerPage', array('is_safe' => array('html'))),
 
+            'datagrid_row_order_by'    => new \Twig_Function_Method($this, 'renderRowOrderBy', array('is_safe' => array('html'))),
+            'datagrid_row_filters'     => new \Twig_Function_Method($this, 'renderRowFilters', array('is_safe' => array('html'))),
+            'datagrid_row_values'      => new \Twig_Function_Method($this, 'renderRowValues', array('is_safe' => array('html'))),
+
             'datagrid_column_order_by' => new \Twig_Function_Method($this, 'renderColumnOrderBy', array('is_safe' => array('html'))),
             'datagrid_column_filter'   => new \Twig_Function_Method($this, 'renderColumnFilter', array('is_safe' => array('html'))),
             'datagrid_column_value'    => new \Twig_Function_Method($this, 'renderColumnValue', array('is_safe' => array('html'))),
@@ -133,6 +137,21 @@ class DataGridExtension extends \Twig_Extension
     public function renderItemsPerPage($datagrid)
     {
         return $this->render($datagrid, 'datagrid_items_per_page');
+    }
+
+    public function renderRowOrderBy($datagrid)
+    {
+        return $this->render($datagrid, 'datagrid_row_order_by');
+    }
+
+    public function renderRowFilters($datagrid)
+    {
+        return $this->render($datagrid, 'datagrid_row_filters');
+    }
+
+    public function renderRowValues($datagrid, $item)
+    {
+        return $this->render($datagrid, 'datagrid_row_values', array('item' => $item));
     }
 
     public function renderColumnOrderBy($datagrid, $field)

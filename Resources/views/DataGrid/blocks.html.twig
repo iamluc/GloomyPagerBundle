@@ -46,22 +46,16 @@
     <table class="gloomy-pager">
        <thead>
            <tr>
-               {% for field in datagrid.fields %}
-                   <th>{{ datagrid_column_order_by(datagrid, field) }}</th>
-               {% endfor %}
+               {{ datagrid_row_order_by(datagrid) }}
            </tr>
            <tr>
-               {% for field in datagrid.fields %}
-                   <th>{{ datagrid_column_filter(datagrid, field) }}</th>
-               {% endfor %}
+               {{ datagrid_row_filters(datagrid) }}
            </tr>
         </thead>
         <tbody>
             {% for item in datagrid.items %}
                <tr>
-                   {% for field in datagrid.fields %}
-                       <td>{{ datagrid_column_value(datagrid, field, item) }}</td>
-                   {% endfor %}
+                   {{ datagrid_row_values(datagrid, item) }}
                </tr>
             {% endfor %}
         </tbody>
@@ -71,6 +65,27 @@
 
 {% block datagrid_footer %}
     {{ datagrid_paginate(datagrid) }}
+{% endblock %}
+
+
+{% block datagrid_row_order_by %}
+    {% for field in datagrid.fields %}
+       <th>{{ datagrid_column_order_by(datagrid, field) }}</th>
+    {% endfor %}
+{% endblock %}
+
+
+{% block datagrid_row_filters %}
+    {% for field in datagrid.fields %}
+       <th>{{ datagrid_column_filter(datagrid, field) }}</th>
+    {% endfor %}
+{% endblock %}
+
+
+{% block datagrid_row_values %}
+    {% for field in datagrid.fields %}
+       <td>{{ datagrid_column_value(datagrid, field, item) }}</td>
+    {% endfor %}
 {% endblock %}
 
 
