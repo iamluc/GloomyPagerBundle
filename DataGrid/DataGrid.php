@@ -16,6 +16,8 @@ class DataGrid
 
     protected $_title;
 
+    protected $_actions;
+
     public function __construct($request, $router, $pager, array $config = array(), $title = '')
     {
         $this->_request   = $request;
@@ -23,6 +25,7 @@ class DataGrid
         $this->_pager     = $pager;
         $this->_config    = $config;
         $this->_title     = $title;
+        $this->_actions   = array();
     }
 
     public function getPager()
@@ -60,5 +63,27 @@ class DataGrid
     public function getTitle()
     {
         return $this->_title;
+    }
+
+    public function addAction($label, $route, $place = 'row', $confirm = null, $routeParams = array())
+    {
+        $this->_actions[$place][] = new Action($label, $route, $confirm, $routeParams);
+        return $this;
+    }
+
+    public function hasActions($place = 'row')
+    {
+        if (!isset($this->_actions[$place])) {
+            return false;
+        }
+        return count($this->_actions[$place]) > 0;
+    }
+
+    public function getActions($place = 'row')
+    {
+        if (!isset($this->_actions[$place])) {
+            return array();
+        }
+        return $this->_actions[$place];
     }
 }

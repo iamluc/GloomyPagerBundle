@@ -19,6 +19,7 @@
 table.gloomy-pager {
     width:                          100%;
     padding: 						0px 15px;
+    border-collapse: 				collapse;
 }
 
 table.gloomy-pager thead tr th, table.gloomy-pager tfoot tr th {
@@ -34,10 +35,23 @@ table.gloomy-pager tr:hover, table.gloomy-pager tr:hover td {
     background-color: 				#f6f6f6;
 }
 
-.gloomy-title h1 {
-	font-size: 						18px;
+.gloomy-pager a {
+    text-decoration:        		none;
+    color:                  		#595959;
+}
+
+.gloomy-header {
+	text-align: 					center;
+	background-color: 				#F2F2F2;
+	border: 						1px solid #E6E6E6;
+	padding: 						5px;
+	margin-bottom: 					5px;
+}
+
+.gloomy-header h1 {
+	float: 							left;
+	font-size: 						20px;
 	margin:							0px;
-	padding-left:					20px;
 }
 
 .gloomy-filters {

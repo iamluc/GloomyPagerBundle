@@ -18,6 +18,15 @@
             <argument type="service" id="gloomy.pager" />
         </service>
 
+        <service id="gloomy.crud" class="Gloomy\PagerBundle\Service\CrudService" scope="request">
+            <argument type="service" id="request" />
+            <argument type="service" id="router" />
+            <argument type="service" id="doctrine" />
+            <argument type="service" id="templating" />
+            <argument type="service" id="gloomy.datagrid" />
+            <argument type="service" id="gloomy.form" />
+        </service>
+
         <service id="gloomy.form" class="Gloomy\PagerBundle\Service\FormService" scope="request">
             <argument type="service" id="form.factory" />
             <argument type="service" id="request" />

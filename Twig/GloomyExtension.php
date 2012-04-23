@@ -22,6 +22,7 @@ class GloomyExtension extends \Twig_Extension
     {
         return array(
             'array_combine'     => new \Twig_Function_Method($this, 'array_combine'),
+            'array_merge'       => new \Twig_Function_Method($this, 'array_merge'),
             'uniqid'            => new \Twig_Function_Method($this, 'uniqid'),
             'print_r'           => new \Twig_Function_Method($this, 'print_r'),
             'get_class'         => new \Twig_Function_Method($this, 'get_class'),
@@ -34,6 +35,11 @@ class GloomyExtension extends \Twig_Extension
     public function array_combine(array $keys, array $values)
     {
         return array_combine($keys, $values);
+    }
+
+    public function array_merge(array $arr1, array $arr2)
+    {
+        return array_merge($arr1, $arr2);
     }
 
     public function uniqid($prefix = '', $more_entropy = false)
