@@ -1,0 +1,23 @@
+{
+    "name": "Gloomy/PagerBundle",
+    "description": "Paginator/datagrid/crud bundle for Symfony2 with advanced filtering & sorting",
+    "type": "symfony-bundle",
+    "keywords": ["pager", "paging", "paginator", "pagination", "datagrid", "crud],
+    "homepage": "https://github.com/iamluc/GloomyPagerBundle",
+    "license": "LGPL2",
+    "authors": [
+        {
+            "name": "Luc Vieillescazes",
+            "email": "luc@vieillescazes.net"
+        }
+    ],
+    "require": {
+        "symfony/framework-bundle": "2.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Gloomy\\PagerBundle": ""
+        }
+    },
+    "target-dir": "Gloomy/PagerBundle"
+}
