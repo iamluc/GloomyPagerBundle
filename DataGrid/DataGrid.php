@@ -23,9 +23,9 @@ class DataGrid
         $this->_request   = $request;
         $this->_router    = $router;
         $this->_pager     = $pager;
-        $this->_config    = $config;
         $this->_title     = $title;
         $this->_actions   = array();
+        $this->_config    = array_merge(array('rowIdVar' => 'id'), $config);
     }
 
     public function getPager()
@@ -42,6 +42,12 @@ class DataGrid
             }
         }
         return $fields;
+    }
+
+    public function getField($alias)
+    {
+        $fields = $this->getPager()->getFields();
+        return $fields[$alias];
     }
 
     public function getItems()
@@ -65,9 +71,12 @@ class DataGrid
         return $this->_title;
     }
 
-    public function addAction($label, $route, $place = 'row', $confirm = null, $routeParams = array())
+    public function addAction(Action $action, $alias = null, $place = 'row')
     {
-        $this->_actions[$place][] = new Action($label, $route, $confirm, $routeParams);
+        if (is_null($alias)) {
+            $alias = $action->getLabel();
+        }
+        $this->_actions[$place][$alias] = $action;
         return $this;
     }
 
@@ -85,5 +94,28 @@ class DataGrid
             return array();
         }
         return $this->_actions[$place];
+    }
+
+    public function getAction($alias, $place = 'row')
+    {
+        return $this->_actions[$place][$alias];
+    }
+
+    public function showOnly($fields)
+    {
+        foreach ($this->getFields(true) as $alias => $field) {
+            if (in_array($alias, $fields)) {
+                $field->show();
+            }
+            else {
+                $field->hide();
+            }
+        }
+        return $this;
+    }
+
+    public function getConfig($option)
+    {
+        return $this->_config[$option];
     }
 }

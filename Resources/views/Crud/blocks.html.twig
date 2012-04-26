@@ -1,0 +1,58 @@
+
+{% block crud %}
+    {{ crud_stylesheets(crud) }}
+    {{ crud_javascripts(crud) }}
+    {{ crud_content(crud) }}
+{% endblock %}
+
+
+{% block crud_stylesheets %}
+    {% if crud.view == 'list' %}
+        {{ datagrid_stylesheets(crud.datagrid) }}
+    {% endif %}
+{% endblock %}
+
+
+{% block crud_javascripts %}
+    {% if crud.view == 'list' %}
+        {{ datagrid_javascripts(crud.datagrid) }}
+    {% endif %}
+{% endblock %}
+
+
+{% block crud_content %}
+    {% if crud.view == 'list' %}
+        {{ crud_list(crud) }}
+    {% elseif crud.view == 'add' %}
+        {{ crud_add(crud) }}
+    {% elseif crud.view == 'edit' %}
+        {{ crud_edit(crud) }}
+    {% endif %}
+{% endblock %}
+
+
+{% block crud_list %}
+    {{ datagrid_content(crud.datagrid) }}
+{% endblock %}
+
+
+{% block crud_add %}
+    <form {{ form_enctype(form) }}
+          method="post"
+          action="{{ path( crud.route, array_combine( [crud.getConfig('viewVar')], ['add'] ) ) }}"
+          >
+        {{ form_widget(form) }}
+        <input type="submit">
+    </form>
+{% endblock %}
+
+
+{% block crud_edit %}
+    <form {{ form_enctype(form) }}
+          method="post"
+          action="{{ path(crud.route, array_combine( [crud.getConfig('idVar'), crud.getConfig('viewVar')], [item.id, 'edit'] ) ) }}"
+          >
+        {{ form_widget(form) }}
+        <input type="submit">
+    </form>
+{% endblock %}

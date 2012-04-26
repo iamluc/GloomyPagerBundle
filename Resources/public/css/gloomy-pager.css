@@ -9,6 +9,7 @@
     padding: 						4px 7px;
     text-decoration: 				none;
 	border: 						1px solid #E8E8E8;
+    color:                  		#595959;
 }
 
 .gloomy-pagination a.active {
@@ -40,6 +41,10 @@ table.gloomy-pager tr:hover, table.gloomy-pager tr:hover td {
     color:                  		#595959;
 }
 
+.gloomy-pager img {
+    vertical-align:        			middle;
+}
+
 .gloomy-header {
 	text-align: 					center;
 	background-color: 				#F2F2F2;
@@ -52,6 +57,20 @@ table.gloomy-pager tr:hover, table.gloomy-pager tr:hover td {
 	float: 							left;
 	font-size: 						20px;
 	margin:							0px;
+}
+
+.gloomy-header a {
+    text-decoration:        		none;
+    color:                  		#595959;
+}
+
+.gloomy-header img {
+    vertical-align:        			middle;
+}
+
+.gloomy-action {
+	margin: 						5px;
+	white-space:					nowrap;
 }
 
 .gloomy-filters {

@@ -11,8 +11,8 @@
 
         // TAILLE DE LA DIV
         size                = input.outerWidth() - 22; // 22 ? padding, border ???
-        if ( size < 230 ) {
-            size        = 230;
+        if ( size < 240 ) {
+            size        = 240;
         }
         option.width(size);
 

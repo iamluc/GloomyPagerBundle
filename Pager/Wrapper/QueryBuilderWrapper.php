@@ -42,11 +42,23 @@ class QueryBuilderWrapper implements Wrapper
         foreach ($entities as $alias => $entity) {
             $metas = $em->getClassMetadata($entity);
             foreach ($metas->columnNames as $column) {
-                $qualifier = $alias.'.'.$column;
-                $type = 'text';
-                $this->_fields[$qualifier] = new Field($column, $type, null, $qualifier);
+                $this->addField(new Field($column, 'text', null, $alias.'.'.$column));
             }
         }
+    }
+
+    public function addField(Field $field, $alias = null)
+    {
+        if (is_null($alias)) {
+            $alias = $field->getProperty();
+        }
+        $this->_fields[$alias] = $field;
+        return $this;
+    }
+
+    public function getQueryBuilder()
+    {
+        return $this->_builder;
     }
 
     public function count()
@@ -260,13 +272,12 @@ class QueryBuilderWrapper implements Wrapper
 
     protected function getFieldQualifier($alias)
     {
-        if (!array_key_exists($alias, $this->_fields)) {
+        if (!isset($this->_fields[$alias])) {
             $alias = $this->_builder->getRootAlias().'.'.$alias; // if alias does not exist, try with default object alias
         }
-
-        if (array_key_exists($alias, $this->_fields)) {
-            return $this->_fields[$alias]->getQualifier();
+        if (!isset($this->_fields[$alias])) {
+            throw new \Exception('Unknown alias '.$alias);
         }
-        throw new \Exception('Unknown alias '.$alias);
+        return $this->_fields[$alias]->getQualifier();
     }
 }

@@ -128,24 +128,23 @@
 
             <div id="div_opt_{{ id }}" class="gloomy-filtersOptions">
 
-                {# Opérateur du champ #}
-                Opérateur
+                {{ 'Operator'|trans([], 'pager') }}
                 <select id="select_filter_{{ id }}"
                         name="{{ filtersVar }}[o][{{ alias }}]"
 
                         onchange="filtersOptsChanged( '{{ id }}' )"
                         onkeyup="submitEnter( event, this );">
 
-                    <option value="contains" {% if operator == "contains" %}selected="selected"{% endif %}>{{ 'Contains'|trans([], 'filters') }}</options>
-                    <option value="notContains" {% if operator == "notContains" %}selected="selected"{% endif %}>{{ 'Not Contains'|trans([], 'filters') }}</options>
-                    <option value="equals" {% if operator == "equals" %}selected="selected"{% endif %}>{{ 'Equals'|trans([], 'filters') }}</options>
-                    <option value="notEquals" {% if operator == "notEquals" %}selected="selected"{% endif %}>{{ 'Not Equals'|trans([], 'filters') }}</options>
-                    <option value="greater" {% if operator == "greater" %}selected="selected"{% endif %}>{{ 'Greater'|trans([], 'filters') }}</options>
-                    <option value="greaterOrEquals" {% if operator == "greaterOrEquals" %}selected="selected"{% endif %}>{{ 'Greater or Equals'|trans([], 'filters') }}</options>
-                    <option value="less" {% if operator == "less" %}selected="selected"{% endif %}>{{ 'Less'|trans([], 'filters') }}</options>
-                    <option value="lessOrEquals" {% if operator == "lessOrEquals" %}selected="selected"{% endif %}>{{ 'Less or Equals'|trans([], 'filters') }}</options>
-                    <option value="null" {% if operator == "null" %}selected="selected"{% endif %}>{{ 'Null'|trans([], 'filters') }}</options>
-                    <option value="notNull" {% if operator == "notNull" %}selected="selected"{% endif %}>{{ 'Not Null'|trans([], 'filters') }}</options>
+                    <option value="contains" {% if operator == "contains" %}selected="selected"{% endif %}>{{ 'Contains'|trans([], 'pager') }}</options>
+                    <option value="notContains" {% if operator == "notContains" %}selected="selected"{% endif %}>{{ 'Not Contains'|trans([], 'pager') }}</options>
+                    <option value="equals" {% if operator == "equals" %}selected="selected"{% endif %}>{{ 'Equals'|trans([], 'pager') }}</options>
+                    <option value="notEquals" {% if operator == "notEquals" %}selected="selected"{% endif %}>{{ 'Not Equals'|trans([], 'pager') }}</options>
+                    <option value="greater" {% if operator == "greater" %}selected="selected"{% endif %}>{{ 'Greater'|trans([], 'pager') }}</options>
+                    <option value="greaterOrEquals" {% if operator == "greaterOrEquals" %}selected="selected"{% endif %}>{{ 'Greater or Equals'|trans([], 'pager') }}</options>
+                    <option value="less" {% if operator == "less" %}selected="selected"{% endif %}>{{ 'Less'|trans([], 'pager') }}</options>
+                    <option value="lessOrEquals" {% if operator == "lessOrEquals" %}selected="selected"{% endif %}>{{ 'Less or Equals'|trans([], 'pager') }}</options>
+                    <option value="null" {% if operator == "null" %}selected="selected"{% endif %}>{{ 'Null'|trans([], 'pager') }}</options>
+                    <option value="notNull" {% if operator == "notNull" %}selected="selected"{% endif %}>{{ 'Not Null'|trans([], 'pager') }}</options>
                 </select>
 
             </div>

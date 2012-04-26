@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="1">
+                <source>Add</source>
+                <target>Ajouter</target>
+            </trans-unit>
+            <trans-unit id="2">
+                <source>Edit</source>
+                <target>Modifier</target>
+            </trans-unit>
+            <trans-unit id="3">
+                <source>Delete</source>
+                <target>Supprimer</target>
+            </trans-unit>
+            <trans-unit id="4">
+                <source>Confirm delete ?</source>
+                <target>Voulez-vous vraiment supprimer cet enregistrement ?</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

@@ -48,16 +48,17 @@ class Pager
          */
         static $pagerNum;
 
-        $pagerVar           = (array_key_exists('pagerVar', $config)) ? $config['pagerVar'] : '_gp'.$pagerNum++;
-        $defaultConfig      = array(    'pageVar'               => $pagerVar.'[p]',
-                                        'orderByVar'            => $pagerVar.'[o]',
-                                        'filtersVar'            => $pagerVar.'[f]',
-                                        'itemsPerPageVar'       => $pagerVar.'[pp]',
-
-                                        'pageRange'             => 5,
-                                        'itemsPerPage'          => 10,
-                                        'itemsPerPageChoices'   => array(10, 20, 100, 500, 1000)
-                                        );
+        $pagerVar           = isset($config['pagerVar']) ? $config['pagerVar'] : '_gp'.$pagerNum++;
+        $defaultConfig      = array(
+                'pagerVar'              => $pagerVar,
+                'pageVar'               => $pagerVar.'[p]',
+                'orderByVar'            => $pagerVar.'[o]',
+                'filtersVar'            => $pagerVar.'[f]',
+                'itemsPerPageVar'       => $pagerVar.'[pp]',
+                'pageRange'             => 5,
+                'itemsPerPage'          => 10,
+                'itemsPerPageChoices'   => array(10, 20, 100, 500, 1000)
+        );
         $this->_config      = array_merge($defaultConfig, $config);
         if (! in_array($this->_config['itemsPerPage'], $this->_config['itemsPerPageChoices'])) {
             $this->_config['itemsPerPageChoices'][]    = $this->_config['itemsPerPage'];
@@ -69,7 +70,18 @@ class Pager
         $this->_route       = $route;
         $this->_addToURL    = $addToURL;
         $this->_wrapper     = $wrapper;
+    }
 
+    protected function getPaginator()
+    {
+        if (is_null($this->_paginator)) {
+            $this->initializePaginator();
+        }
+        return $this->_paginator;
+    }
+
+    protected function initializePaginator()
+    {
         /**
          * Sorting & filtering
          */
@@ -81,11 +93,11 @@ class Pager
         $filters            = $this->getValue('filtersVar');
         if (is_array($filters)) {
             $this->_wrapper->setFilters(
-                    $filters['f'],                                              // Le nom des champs
-                    $filters['v'],                                              // La valeur associée
-                    array_key_exists('o', $filters) ? $filters['o'] : array(),  // L'opérateur a utilisé
-                    array_key_exists('l', $filters) ? $filters['l'] : array()   // L'organisation logique (ET/OU)
-                    );
+                    $filters['f'],                                              // Alias of the field
+                    $filters['v'],                                              // Value
+                    array_key_exists('o', $filters) ? $filters['o'] : array(),  // Operator
+                    array_key_exists('l', $filters) ? $filters['l'] : array()   // Logical (AND/OR)
+            );
         }
 
         /**
@@ -100,6 +112,12 @@ class Pager
         $this->_paginator->setCurrentPageNumber((int) $this->getValue('pageVar', 1));
         $this->_paginator->setItemCountPerPage((int) $this->getValue('itemsPerPageVar', $this->getConfig('itemsPerPage')));
         $this->_paginator->setPageRange((int) $this->getConfig('pageRange'));
+    }
+
+
+    public function getWrapper()
+    {
+        return $this->_wrapper;
     }
 
     public function getConfig($option)
@@ -124,12 +142,12 @@ class Pager
 
     public function getCurrentPageNumber()
     {
-        return $this->_paginator->getCurrentPageNumber();
+        return $this->getPaginator()->getCurrentPageNumber();
     }
 
     public function setCurrentPageNumber($page)
     {
-        $this->_paginator->setCurrentPageNumber($page);
+        $this->getPaginator()->setCurrentPageNumber($page);
     }
 
     public function getFields()
@@ -139,12 +157,12 @@ class Pager
 
     public function getItems()
     {
-        return $this->_paginator->getCurrentItems();
+        return $this->getPaginator()->getCurrentItems();
     }
 
     public function getPages()
     {
-        return $this->_paginator->getPages();
+        return $this->getPaginator()->getPages();
     }
 
     public function getItemsPerPage()

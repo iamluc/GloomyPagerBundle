@@ -6,7 +6,7 @@ class Field
 {
     public static $defaultDateFormat = 'Y-m-d H:i:s';
 
-    protected $_name;
+    protected $_property;
 
     protected $_qualifier;
 
@@ -14,22 +14,25 @@ class Field
 
     protected $_label;
 
+    protected $_options;
+
     protected $_dateFormat;
 
     protected $_visible;
 
-    public function __construct($name, $type = 'text', $label = '', $qualifier = null)
+    public function __construct($property, $type = 'text', $label = '', $qualifier = null, $options = array())
     {
-        $this->_name      = $name;
+        $this->_property  = $property;
         $this->_type      = $type;
-        $this->_label     = $label ?: ucfirst($name);
-        $this->_qualifier = $qualifier ?: $name;
+        $this->_label     = $label ?: ucfirst($property);
+        $this->_qualifier = $qualifier ?: $property;
+        $this->_options   = $options;
         $this->_visible   = true;
     }
 
-    public function getName()
+    public function getProperty()
     {
-        return $this->_name;
+        return $this->_property;
     }
 
     public function getQualifier()
@@ -57,6 +60,17 @@ class Field
     public function getLabel()
     {
         return $this->_label;
+    }
+
+    public function setOptions($options)
+    {
+        $this->_options = $options;
+        return $this;
+    }
+
+    public function getOptions()
+    {
+        return $this->_options;
     }
 
     public function setDateFormat($dateFormat)

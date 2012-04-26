@@ -40,7 +40,12 @@
                         {% if action.confirm %}
                             onclick="return confirm('{{ action.confirm|e('js') }}');"
                         {% endif %}
-                        >{{ action.label }}</a>
+                        >
+                        {%  if action.image %}
+                            <img src="{{ asset(action.image) }}">
+                        {%  endif %}
+                        {{ action.label }}
+                    </a>
                 {% endfor %}
             </span>
         {% endif %}
@@ -48,9 +53,9 @@
         <span style="float: right;">
             <span style=" margin-right: 50px;">
                 {% if datagrid.pager.pages.totalItemCount %}
-                    {{ datagrid.pager.pages.firstItemNumber }} to {{ datagrid.pager.pages.lastItemNumber }} on {{ datagrid.pager.pages.totalItemCount }}
+                    {{ '%first% to %last% on %total%'|trans({'%first%': datagrid.pager.pages.firstItemNumber, '%last%': datagrid.pager.pages.lastItemNumber, '%total%': datagrid.pager.pages.totalItemCount}, 'datagrid') }}
                 {% else %}
-                    no data to display
+                    {{ 'No data to display'|trans({}, 'datagrid') }}
                 {% endif %}
             </span>
             <span style=" margin-right: 10px;">
@@ -72,18 +77,12 @@
 {% block datagrid_body %}
     <table class="gloomy-pager">
        <thead>
-           <tr>
-               {{ datagrid_row_order_by(datagrid) }}
-           </tr>
-           <tr>
-               {{ datagrid_row_filters(datagrid) }}
-           </tr>
+           {{ datagrid_row_order_by(datagrid) }}
+           {{ datagrid_row_filters(datagrid) }}
         </thead>
         <tbody>
             {% for item in datagrid.items %}
-               <tr>
-                   {{ datagrid_row_values(datagrid, item) }}
-               </tr>
+               {{ datagrid_row_values(datagrid, item) }}
             {% endfor %}
         </tbody>
     </table>
@@ -96,40 +95,53 @@
 
 
 {% block datagrid_row_order_by %}
-    {% for field in datagrid.fields %}
-       <th>{{ datagrid_column_order_by(datagrid, field) }}</th>
-    {% endfor %}
-    {% if datagrid.hasActions() %}
-        <th></th>
-    {% endif %}
+    <tr>
+        {% for alias, field in datagrid.fields %}
+           {{ datagrid_column_order_by(datagrid, field, alias) }}
+        {% endfor %}
+        {% if datagrid.hasActions() %}
+            <th></th>
+        {% endif %}
+    </tr>
 {% endblock %}
 
 
 {% block datagrid_row_filters %}
-    {% for field in datagrid.fields %}
-       <th>{{ datagrid_column_filter(datagrid, field) }}</th>
-    {% endfor %}
-    {% if datagrid.hasActions() %}
-        <th></th>
-    {% endif %}
+    <tr>
+        {% for alias, field in datagrid.fields %}
+            {{ datagrid_column_filter(datagrid, field, alias) }}
+        {% endfor %}
+        {% if datagrid.hasActions() %}
+            <th></th>
+        {% endif %}
+    </tr>
 {% endblock %}
 
 
 {% block datagrid_row_values %}
-    {% for field in datagrid.fields %}
-       <td>{{ datagrid_column_value(datagrid, field, item) }}</td>
-    {% endfor %}
-    {% if datagrid.hasActions('row') %}
-        <td>
-            {% for action in datagrid.getActions('row') %}
-                <a href="{{ path(action.route, array_merge({'id': item.id}, action.routeParams)) }}"
-                    {% if action.confirm %}
-                        onclick="return confirm('{{ action.confirm|e('js') }}');"
-                    {% endif %}
-                    >{{ action.label }}</a>
-            {% endfor %}
-        </td>
-    {% endif %}
+    <tr>
+        {% for alias, field in datagrid.fields %}
+           {{ datagrid_column_value(datagrid, field, item, alias) }}</td>
+        {% endfor %}
+        {% if datagrid.hasActions('row') %}
+            <td>
+                {% for action in datagrid.getActions('row') %}
+                    <span class="gloomy-action">
+                        <a href="{{ path(action.route, array_merge( array_combine( [datagrid.getConfig('rowIdVar')], [item.id] ), action.routeParams)) }}"
+                            {% if action.confirm %}
+                                onclick="return confirm('{{ action.confirm|e('js') }}');"
+                            {% endif %}
+                            >
+                            {%  if action.image %}
+                                <img src="{{ asset(action.image) }}">
+                            {%  endif %}
+                            {{ action.label }}
+                        </a>
+                    </span>
+                {% endfor %}
+            </td>
+        {% endif %}
+    </tr>
 {% endblock %}
 
 
@@ -147,16 +159,22 @@
 
 {% block datagrid_column_order_by %}
     {% import 'GloomyPagerBundle:Pager:macros.html.twig' as helper %}
-    {{ helper.orderBy(datagrid.pager, field.qualifier, field.label) }}
+    <th>
+        {{ helper.orderBy(datagrid.pager, alias, field.label) }}
+    </th>
 {% endblock %}
 
 
 {% block datagrid_column_filter %}
     {% import 'GloomyPagerBundle:Pager:macros.html.twig' as helper %}
-    {{ helper.filter(datagrid.pager, field.qualifier) }}
+    <th>
+        {{ helper.filter(datagrid.pager, alias) }}
+    </th>
 {% endblock %}
 
 
 {% block datagrid_column_value %}
-    {{ datagrid_item_value(datagrid, field, item) }}
+    <td>
+        {{ datagrid_item_value(datagrid, field, item) }}
+    </td>
 {% endblock %}
