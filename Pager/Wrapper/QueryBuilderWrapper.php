@@ -272,6 +272,8 @@ class QueryBuilderWrapper implements Wrapper
 
     protected function getFieldQualifier($alias)
     {
+//         var_dump(array_keys($this->_fields));
+//         exit;
         if (!isset($this->_fields[$alias])) {
             $alias = $this->_builder->getRootAlias().'.'.$alias; // if alias does not exist, try with default object alias
         }

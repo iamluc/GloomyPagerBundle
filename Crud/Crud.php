@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 use Gloomy\PagerBundle\DataGrid\DataGrid;
 use Gloomy\PagerBundle\DataGrid\Action;
+use Gloomy\PagerBundle\DataGrid\Notification;
 
 class Crud
 {
@@ -18,6 +19,8 @@ class Crud
     protected $_templating;
 
     protected $_translator;
+
+    protected $_session;
 
     protected $_datagridService;
 
@@ -35,7 +38,9 @@ class Crud
 
     protected $_route;
 
-    public function __construct($request, $router, $doctrine, $templating, $translator, $datagridService, $form, $entity, $entityType = null, $config = array())
+    public function __construct(
+            $request, $router, $doctrine, $templating, $translator, $session,
+            $datagridService, $form, $entity, $entityType = null, $config = array())
     {
         /**
          * Initialize pager
@@ -47,6 +52,7 @@ class Crud
         $this->_doctrine        = $doctrine;
         $this->_templating      = $templating;
         $this->_translator      = $translator;
+        $this->_session         = $session;
         $this->_datagridService = $datagridService;
         $this->_form            = $form;
         $this->_entity          = $entity;
@@ -54,9 +60,12 @@ class Crud
 
         $crudVar       = isset($config['crudVar']) ? $config['crudVar'] : '_gc'.$crudNum++;
         $defaultConfig = array(
-                'idVar'    => $crudVar.'[i]',
-                'viewVar'  => $crudVar.'[v]',
-//                 'pagerVar' => $crudVar.'[p]'
+                'idVar'     => $crudVar.'[i]',
+                'viewVar'   => $crudVar.'[v]',
+//                 'pagerVar'  => $crudVar.'[p]',
+                'canDelete' => true,
+                'canAdd'    => true,
+                'canEdit'   => true,
         );
         $this->_config     = array_merge($defaultConfig, $config);
 
@@ -92,10 +101,19 @@ class Crud
     public function getView()
     {
         $view = $this->getValue('viewVar');
-        if (in_array($view, array('add', 'edit', 'delete'))) {
+
+        if ('add' === $view && $this->getConfig('canAdd')) {
             return $view;
         }
-        return 'list';
+        elseif ('edit' === $view && $this->getConfig('canEdit')) {
+            return $view;
+        }
+        elseif ('delete' === $view && $this->getConfig('canDelete')) {
+            return $view;
+        }
+        else {
+            return 'list';
+        }
     }
 
     public function setTitle($title)
@@ -110,6 +128,14 @@ class Crud
     {
         if (!is_null($this->getDatagrid())) {
             $this->getDatagrid()->getPager()->getWrapper()->setOrderBy($orderBy);
+        }
+        return $this;
+    }
+
+    public function setItemsPerPage($num)
+    {
+        if (!is_null($this->getDatagrid())) {
+            $this->getDatagrid()->setItemsPerPage($num);
         }
         return $this;
     }
@@ -141,7 +167,7 @@ class Crud
                 return $this->deleteAction($this->getValue('idVar'));
                 break;
 
-            default:
+            case 'list':
                 return $this->listAction();
                 break;
         }
@@ -164,12 +190,24 @@ class Crud
 
     protected function prepareListView()
     {
-        $this->_datagrid = $this->_datagridService
-            ->factory($this->_entity, array('rowIdVar' => $this->getConfig('idVar')))
-            ->addAction(new Action($this->trans('Add'), $this->_request->get('_route'), array($this->getConfig('viewVar') => 'add'), null, 'bundles/gloomypager/images/add.png'), 'add', 'toolbar')
-            ->addAction(new Action($this->trans('Edit'), $this->_request->get('_route'), array($this->getConfig('viewVar') => 'edit'), null, 'bundles/gloomypager/images/edit.png'), 'edit')
-            ->addAction(new Action($this->trans('Delete'), $this->_request->get('_route'), array($this->getConfig('viewVar') => 'delete'), $this->trans('Confirm delete ?'), 'bundles/gloomypager/images/delete.png'), 'delete')
-        ;
+        $this->_datagrid = $this->_datagridService->factory($this->_entity, array('rowIdVar' => $this->getConfig('idVar')));
+
+        if ($this->getConfig('canAdd')) {
+            $this->_datagrid->addAction(new Action($this->trans('Add'), $this->_request->get('_route'), array($this->getConfig('viewVar') => 'add'), null, 'bundles/gloomypager/images/add.png'), 'add', 'toolbar');
+        }
+        if ($this->getConfig('canEdit')) {
+            $this->_datagrid->addAction(new Action($this->trans('Edit'), $this->_request->get('_route'), array($this->getConfig('viewVar') => 'edit'), null, 'bundles/gloomypager/images/edit.png'), 'edit');
+        }
+        if ($this->getConfig('canDelete')) {
+            $this->_datagrid->addAction(new Action($this->trans('Delete'), $this->_request->get('_route'), array($this->getConfig('viewVar') => 'delete'), $this->trans('Confirm delete ?'), 'bundles/gloomypager/images/delete.png'), 'delete');
+        }
+
+        if ($this->_session->hasFlash('crud_success')) {
+            $this->_datagrid->addNotification(new Notification($this->_session->getFlash('crud_success'), 'success'));
+        }
+        if ($this->_session->hasFlash('crud_error')) {
+            $this->_datagrid->addNotification(new Notification($this->_session->getFlash('crud_error'), 'error'));
+        }
     }
 
     protected function listAction()
@@ -183,6 +221,7 @@ class Crud
         $this->_formDatas = $this->_form->create(new $this->_entityTypeClass, new $this->_entityClass, array(), 'redirect', $options);
 
         if ($this->_formDatas instanceof Response) {
+            $this->_session->setFlash('crud_success', $this->trans('Creation successful'));
             return $this->_formDatas;
         }
         return array('crud' => $this);
@@ -194,6 +233,7 @@ class Crud
         $this->_formDatas = $this->_form->edit(new $this->_entityTypeClass, array($this->_entity, $id), array(), 'redirect', $options);
 
         if ($this->_formDatas instanceof Response) {
+            $this->_session->setFlash('crud_success', $this->trans('Edition successful'));
             return $this->_formDatas;
         }
         return array('crud' => $this);
@@ -201,8 +241,13 @@ class Crud
 
     protected function deleteAction($id)
     {
-        $options = array('url' => $this->_router->generate($this->_request->get('_route')));
-        return $this->_form->delete(array($this->_entity, $id), 'redirect', $options);
+        $options          = array('url' => $this->_router->generate($this->_request->get('_route')));
+        $this->_formDatas = $this->_form->delete(array($this->_entity, $id), 'redirect', $options);
+
+        if ($this->_formDatas instanceof Response) {
+            $this->_session->setFlash('crud_success', $this->trans('Delete successful'));
+        }
+        return $this->_formDatas;
     }
 
     /**

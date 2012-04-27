@@ -4,7 +4,7 @@
         <body>
             <trans-unit id="1">
                 <source>%first% to %last% on %total%</source>
-                <target>De %first% à %last% sur %total%</target>
+                <target>%first% à %last% sur %total%</target>
             </trans-unit>
             <trans-unit id="2">
                 <source>No data to display</source>

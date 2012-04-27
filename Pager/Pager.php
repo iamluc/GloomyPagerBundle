@@ -148,6 +148,13 @@ class Pager
     public function setCurrentPageNumber($page)
     {
         $this->getPaginator()->setCurrentPageNumber($page);
+        return $this;
+    }
+
+    public function setItemCountPerPage($itemCount)
+    {
+        $this->getPaginator()->setItemCountPerPage($itemCount);
+        return $this;
     }
 
     public function getFields()
@@ -163,6 +170,11 @@ class Pager
     public function getPages()
     {
         return $this->getPaginator()->getPages();
+    }
+
+    public function setItemsPerPage($num)
+    {
+        $this->_config['itemsPerPage'] = $num;
     }
 
     public function getItemsPerPage()

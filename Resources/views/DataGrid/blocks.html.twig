@@ -42,7 +42,7 @@
                         {% endif %}
                         >
                         {%  if action.image %}
-                            <img src="{{ asset(action.image) }}">
+                            <img src="{{ asset(action.image) }}" title="{{ action.label }}">
                         {%  endif %}
                         {{ action.label }}
                     </a>
@@ -71,6 +71,14 @@
 
         <div style="clear: both;"></div>
     </div>
+
+    {% if datagrid.hasNotifications() %}
+        <div class="gloomy-notifications">
+            {% for notification in datagrid.notifications %}
+                <div class="gloomy-notification-{{ notification.type }}">{{ notification.message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
 {% endblock %}
 
 
@@ -133,7 +141,7 @@
                             {% endif %}
                             >
                             {%  if action.image %}
-                                <img src="{{ asset(action.image) }}">
+                                <img src="{{ asset(action.image) }}" title="{{ action.label }}">
                             {%  endif %}
                             {{ action.label }}
                         </a>

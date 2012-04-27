@@ -2,8 +2,6 @@
 
 namespace Gloomy\PagerBundle\DataGrid;
 
-use Gloomy\PagerBundle\Pager\Wrapper;
-
 class DataGrid
 {
     protected $_request;
@@ -18,14 +16,17 @@ class DataGrid
 
     protected $_actions;
 
+    protected $_notifications;
+
     public function __construct($request, $router, $pager, array $config = array(), $title = '')
     {
-        $this->_request   = $request;
-        $this->_router    = $router;
-        $this->_pager     = $pager;
-        $this->_title     = $title;
-        $this->_actions   = array();
-        $this->_config    = array_merge(array('rowIdVar' => 'id'), $config);
+        $this->_request       = $request;
+        $this->_router        = $router;
+        $this->_pager         = $pager;
+        $this->_config        = array_merge(array('rowIdVar' => 'id'), $config);
+        $this->_title         = $title;
+        $this->_actions       = array();
+        $this->_notifications = array();
     }
 
     public function getPager()
@@ -101,6 +102,22 @@ class DataGrid
         return $this->_actions[$place][$alias];
     }
 
+    public function addNotification(Notification $notification)
+    {
+        $this->_notifications[] = $notification;
+        return $this;
+    }
+
+    public function hasNotifications()
+    {
+        return count($this->_notifications) > 0;
+    }
+
+    public function getNotifications()
+    {
+        return $this->_notifications;
+    }
+
     public function showOnly($fields)
     {
         foreach ($this->getFields(true) as $alias => $field) {
@@ -117,5 +134,11 @@ class DataGrid
     public function getConfig($option)
     {
         return $this->_config[$option];
+    }
+
+    public function setItemsPerPage($num)
+    {
+        $this->getPager()->setItemsPerPage($num);
+        return $this;
     }
 }

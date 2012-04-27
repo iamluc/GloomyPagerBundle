@@ -18,6 +18,26 @@
                 <source>Confirm delete ?</source>
                 <target>Voulez-vous vraiment supprimer cet enregistrement ?</target>
             </trans-unit>
+            <trans-unit id="5">
+                <source>Save</source>
+                <target>Enregistrer</target>
+            </trans-unit>
+            <trans-unit id="6">
+                <source>Cancel</source>
+                <target>Annuler</target>
+            </trans-unit>
+            <trans-unit id="7">
+                <source>Creation successful</source>
+                <target>Création effectuée</target>
+            </trans-unit>
+            <trans-unit id="8">
+                <source>Edition successful</source>
+                <target>Mise à jour effectuée</target>
+            </trans-unit>
+            <trans-unit id="9">
+                <source>Delete successful</source>
+                <target>Suppression effectuée</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
