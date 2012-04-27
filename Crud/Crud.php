@@ -167,7 +167,7 @@ class Crud
                 return $this->deleteAction($this->getValue('idVar'));
                 break;
 
-            case 'list':
+            default:
                 return $this->listAction();
                 break;
         }
