@@ -107,7 +107,7 @@
         {% for alias, field in datagrid.fields %}
            {{ datagrid_column_order_by(datagrid, field, alias) }}
         {% endfor %}
-        {% if datagrid.hasActions() %}
+        {% if datagrid.hasActions('row') %}
             <th></th>
         {% endif %}
     </tr>
@@ -119,7 +119,7 @@
         {% for alias, field in datagrid.fields %}
             {{ datagrid_column_filter(datagrid, field, alias) }}
         {% endfor %}
-        {% if datagrid.hasActions() %}
+        {% if datagrid.hasActions('row') %}
             <th></th>
         {% endif %}
     </tr>
@@ -132,22 +132,7 @@
            {{ datagrid_column_value(datagrid, field, item, alias) }}</td>
         {% endfor %}
         {% if datagrid.hasActions('row') %}
-            <td>
-                {% for action in datagrid.getActions('row') %}
-                    <span class="gloomy-action">
-                        <a href="{{ path(action.route, array_merge( array_combine( [datagrid.getConfig('rowIdVar')], [item.id] ), action.routeParams)) }}"
-                            {% if action.confirm %}
-                                onclick="return confirm('{{ action.confirm|e('js') }}');"
-                            {% endif %}
-                            >
-                            {%  if action.image %}
-                                <img src="{{ asset(action.image) }}" title="{{ action.label }}">
-                            {%  endif %}
-                            {{ action.label }}
-                        </a>
-                    </span>
-                {% endfor %}
-            </td>
+            {{ datagrid_column_action(datagrid, item) }}
         {% endif %}
     </tr>
 {% endblock %}
@@ -180,6 +165,25 @@
     </th>
 {% endblock %}
 
+
+{% block datagrid_column_action %}
+    <td>
+        {% for action in datagrid.getActions('row') %}
+            <span class="gloomy-action">
+                <a href="{{ path(action.route, array_merge( array_combine( [datagrid.getConfig('rowIdVar')], [item.id] ), action.routeParams)) }}"
+                    {% if action.confirm %}
+                        onclick="return confirm('{{ action.confirm|e('js') }}');"
+                    {% endif %}
+                    >
+                    {%  if action.image %}
+                        <img src="{{ asset(action.image) }}" title="{{ action.label }}">
+                    {%  endif %}
+                    {{ action.label }}
+                </a>
+            </span>
+        {% endfor %}
+    </td>
+{% endblock %}
 
 {% block datagrid_column_value %}
     <td>

@@ -64,6 +64,7 @@ class DataGridExtension extends \Twig_Extension
 
             'datagrid_column_order_by' => new \Twig_Function_Method($this, 'renderColumnOrderBy', array('is_safe' => array('html'))),
             'datagrid_column_filter'   => new \Twig_Function_Method($this, 'renderColumnFilter', array('is_safe' => array('html'))),
+            'datagrid_column_action'   => new \Twig_Function_Method($this, 'renderColumnAction', array('is_safe' => array('html'))),
             'datagrid_column_value'    => new \Twig_Function_Method($this, 'renderColumnValue', array('is_safe' => array('html'))),
 
             'datagrid_item_value'      => new \Twig_Function_Method($this, 'renderItemValue'),
@@ -176,6 +177,11 @@ class DataGridExtension extends \Twig_Extension
     {
         $blocks = array('datagrid_column_filter__'.$this->sanitizeAlias($alias), 'datagrid_column_filter');
         return $this->render($datagrid, $blocks, array('field' => $field, 'alias' => $alias));
+    }
+
+    public function renderColumnAction($datagrid, $item)
+    {
+        return $this->render($datagrid, 'datagrid_column_action', array('item' => $item));
     }
 
     public function renderColumnValue($datagrid, $field, $item, $alias)

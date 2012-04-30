@@ -55,6 +55,7 @@ class CrudExtension extends \Twig_Extension
             'crud_list'        => new \Twig_Function_Method($this, 'renderCrudList', array('is_safe' => array('html'))),
             'crud_add'         => new \Twig_Function_Method($this, 'renderCrudAdd', array('is_safe' => array('html'))),
             'crud_edit'        => new \Twig_Function_Method($this, 'renderCrudEdit', array('is_safe' => array('html'))),
+            'crud_form'        => new \Twig_Function_Method($this, 'renderCrudForm', array('is_safe' => array('html'))),
         );
     }
 
@@ -121,5 +122,10 @@ class CrudExtension extends \Twig_Extension
     public function renderCrudEdit($crud)
     {
         return $this->render($crud, 'crud_edit', $crud->getFormDatas());
+    }
+
+    public function renderCrudForm($crud, $form)
+    {
+        return $this->render($crud, 'crud_form', array('form' => $form));
     }
 }
