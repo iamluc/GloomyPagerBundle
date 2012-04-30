@@ -1,23 +1,28 @@
 GloomyPagerBundle
 =================
 
-NEW
----
+NEWS
+----
 
-Added datagrid (automatic pager templating)
+- Added Crud on top of the DataGrid (Automatic Create/Retrieve/Update/Delete on Entities)
+- Added DataGrid on top of the Pager (Automatic pager templating)
+
+DEMO
+----
+**Test it on [our demo website](http://iamluc.legtux.org/web/demo1)**
+(You can download the demonstration website [on github](https://github.com/iamluc/DemoSite))
 
 ABOUT
 -----
 
 The GloomyPagerBundle allows you to display datas with pagination, and to easily order and filter them.
 
-**Test it on [our demo website](http://iamluc.legtux.org/web/demo1)**
+**3 services are availables :**
+- Pager lets you manipulate ressources like Array or Entity, but you keep total control of your template.
+- DataGrid allows you to render a default template. But you can of course customize each parts of it. It sits on top of the Pager.
+- Crud adds create/edit/delete views in addition of the DataGrid view. It sits on top of the DataGrid.
 
-(You can download the demonstration website [here on github](https://github.com/iamluc/DemoSite))
-
-It sits on top of PagerWrapper (Array and ORM QueryBuilder for now).
-Features are :
-
+**Features of the Pager Wrappers (Array, Entity/ORM QueryBuilder) are :**
 - Advanced filtering (AND/OR);
 
 >     $filters   = array( 'operator'    => 'and',
@@ -36,30 +41,59 @@ Features are :
 - Ajax compatible
 - Many pager on the same page
 
-#LICENSE
+LICENSE
+-------
+
 LGPL v2
 
 EXEMPLES
 --------
 
-PHP CODE
+##Crud
 
-    static protected $persons = array(
-            array(  'firstname' => 'Tim',
-                    'lastname'  => 'Burton',
-                    'job'       => 'Director',
-                    'moviesNb'  => 28
-                    ),
-    […]
+PHP
 
-    public function demo1Action()
+    /**
+     * @Template()
+     */
+    public function crudAction()
     {
-        return $this->render('GloomyDemoSiteBundle::demo1.html.twig', array('pager' => $$this->get('gloomy.pager')->factory(self::$persons, 'demo1')));
+        return $this->get('gloomy.crud')->factory('MyBundle:MyEntity')->handle();
+    }
+    
+TWIG
+
+    {{ crud(crud) }}
+
+##Datagrid
+
+PHP 
+
+    /**
+     * @Template()
+     */
+    public function dataGridAction()
+    {
+        return array('datagrid' => $this->get('gloomy.datagrid')->factory('MyBundle:MyEntity'));
     }
 
 TWIG
 
-    {% extends 'GloomyDemoSiteBundle:Common:layout.html.twig' %}
+    {{ datagrid(datagrid) }}
+
+##Pager
+
+PHP
+
+    /**
+     * @Template()
+     */
+    public function pagerAction()
+    {
+        return array('pager' => $this->get('gloomy.pager')->factory('MyBundle:MyEntity'));
+    }
+
+TWIG
 
     {% import 'GloomyPagerBundle:Pager:macros.html.twig' as helper %}
 
@@ -113,11 +147,7 @@ TWIG
 INSTALLATION
 ------------
 
-###NOTE :
-* the QueryBuilderWraper works better with Doctrine 2.2
-
-
-1) Download the bundle
+##1. Download the bundle
 
 **Using deps file**
 
@@ -135,14 +165,14 @@ Download the bundle ([https://github.com/iamluc/GloomyPagerBundle](https://githu
 
     You must have a tree similar to vendor/bundles/Gloomy/PagerBundle
 
-2) Add to app/autoload.php :
+##2. Add to app/autoload.php :
 
     'Gloomy'           => __DIR__.'/../vendor/bundles',
 
-4) Add to app/AppKernel.php
+##3. Add to app/AppKernel.php
 
     new Gloomy\PagerBundle\GloomyPagerBundle(),
 
-5) Install assets (Optional)
+##4. Install assets (Optional)
 
-    php app/console assets:install web
+    php app/console assets:install --symlink web
