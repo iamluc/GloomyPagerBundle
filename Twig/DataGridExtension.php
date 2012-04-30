@@ -100,8 +100,11 @@ class DataGridExtension extends \Twig_Extension
         throw new \Exception('Block '.$block.' not found');
     }
 
-    public function renderDataGrid($datagrid)
+    public function renderDataGrid($datagrid, $title = null)
     {
+        if (!is_null($title)) {
+            $datagrid->setTitle($title);
+        }
         return $this->render($datagrid, 'datagrid');
     }
 
@@ -115,8 +118,11 @@ class DataGridExtension extends \Twig_Extension
         return $this->render($datagrid, 'datagrid_stylesheets');
     }
 
-    public function renderContent($datagrid)
+    public function renderContent($datagrid, $title = null)
     {
+        if (!is_null($title)) {
+            $datagrid->setTitle($title);
+        }
         return $this->render($datagrid, 'datagrid_content');
     }
 

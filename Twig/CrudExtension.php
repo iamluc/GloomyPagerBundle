@@ -82,8 +82,11 @@ class CrudExtension extends \Twig_Extension
         throw new \Exception('Block '.$block.' not found');
     }
 
-    public function renderCrud($crud)
+    public function renderCrud($crud, $title = null)
     {
+        if (!is_null($title)) {
+            $crud->setTitle($title);
+        }
         return $this->render($crud, 'crud');
     }
 
@@ -97,8 +100,11 @@ class CrudExtension extends \Twig_Extension
         return $this->render($crud, 'crud_stylesheets');
     }
 
-    public function renderContent($crud)
+    public function renderContent($crud, $title = null)
     {
+        if (!is_null($title)) {
+            $crud->setTitle($title);
+        }
         return $this->render($crud, 'crud_content');
     }
 
