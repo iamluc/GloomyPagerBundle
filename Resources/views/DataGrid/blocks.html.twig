@@ -161,7 +161,7 @@
 {% block datagrid_column_filter %}
     {% import 'GloomyPagerBundle:Pager:macros.html.twig' as helper %}
     <th>
-        {{ helper.filter(datagrid.pager, alias) }}
+        {{ helper.filter(datagrid.pager, alias, field.type) }}
     </th>
 {% endblock %}
 

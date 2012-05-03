@@ -11,8 +11,8 @@
 
         // TAILLE DE LA DIV
         size                = input.outerWidth() - 22; // 22 ? padding, border ???
-        if ( size < 240 ) {
-            size        = 240;
+        if ( size < 310 ) {
+            size        = 310;
         }
         option.width(size);
 
@@ -67,43 +67,6 @@
         select      = jQuery('#select_filter_'+id);
         input       = jQuery('#input_filter_'+id);
         clear       = jQuery('#clear_filter_'+id);
-
-        // LES MEMES REGLES DOIVENT ETRE REPRISES DANS LA TEMPLATE
-
-//        if ( select.val() == 'in' || select.val() == 'containsIn' ) {
-//
-//            if ( input.nodeName == 'INPUT' ) {
-//
-//                txt             = document.createElement( 'textarea' );
-//                txt.id          = input.id;
-//                txt.name        = input.name;
-//                txt.value       = input.value;
-//                txt.style.borderColor    = input.style.borderColor;
-//                txt.readOnly    = input.readOnly;
-//                txt.onkeyup     = input.onkeyup;
-//                txt.onchange    = input.onchange;
-//
-//                $( 'div_filter_'+name ).insertBefore( txt, input );
-//                $( 'div_filter_'+name ).removeChild( input );
-//            }
-//        }
-//        else {
-//
-//            if ( input.nodeName == 'TEXTAREA' ) {
-//
-//                txt             = document.createElement( 'input' );
-//                txt.id          = input.id;
-//                txt.name        = input.name;
-//                txt.value       = input.value;
-//                txt.style.borderColor    = input.style.borderColor;
-//                txt.readOnly    = input.readOnly;
-//                txt.onkeyup     = input.onkeyup;
-//                txt.onchange    = input.onchange;
-//
-//                $( 'div_filter_'+name ).insertBefore( txt, input );
-//                $( 'div_filter_'+name ).removeChild( input );
-//            }
-//        }
 
         if ( select.val() == 'null' || select.val() == 'notNull' ) {
         	input.attr('class', 'gloomy-filters notNullFilter');

@@ -41,8 +41,8 @@ class QueryBuilderWrapper implements Wrapper
 
         foreach ($entities as $alias => $entity) {
             $metas = $em->getClassMetadata($entity);
-            foreach ($metas->columnNames as $column) {
-                $this->addField(new Field($column, 'text', null, $alias.'.'.$column));
+            foreach ($metas->fieldMappings as $property => $infos) {
+                $this->addField(new Field($property, $infos['type'], null, $alias.'.'.$property));
             }
         }
     }
@@ -91,7 +91,7 @@ class QueryBuilderWrapper implements Wrapper
     {
         $first    = true;
         foreach ($orderBy as $alias => $order) {
-            $sort    = $this->getFieldQualifier($alias);
+            $sort    = $this->getField($alias)->getQualifier();
             if ($first) {
                 $this->_builder->orderBy($sort, $order);
                 $first = false;
@@ -119,8 +119,17 @@ class QueryBuilderWrapper implements Wrapper
 
         foreach ($fields as $key => $alias) {
 
-            $field      = $this->getFieldQualifier($alias);
+            $field      = $this->getField($alias);
+            $qualifier  = $field->getQualifier();
+
             $value      = array_key_exists($key, $values) ? $values[$key] : '';
+            if ('date' === $field->getType() && $value) {
+                $date   = \DateTime::createFromFormat($field->getDateFormat(), $value);
+                if ($date) {
+                    $value = $date->format('Y-m-d');
+                }
+            }
+
             $operator   = array_key_exists($key, $operators) ? $operators[$key] : 'contains';
             $paramName  = 'param'.++$paramNum;
 
@@ -134,60 +143,60 @@ class QueryBuilderWrapper implements Wrapper
                 default:
                 case "c":
                 case "contains":
-                    $criteria[]    = $expr->like($field, ':'.$paramName);
+                    $criteria[]    = $expr->like($qualifier, ':'.$paramName);
                     $this->_builder->setParameter($paramName, '%'.$value.'%');
                     break;
 
                 case "nc":
                 case "notContains":
-                    $criteria[]    = $expr->not($expr->like($field, ':'.$paramName));
+                    $criteria[]    = $expr->not($expr->like($qualifier, ':'.$paramName));
                     $this->_builder->setParameter($paramName, '%'.$value.'%');
                     break;
 
                 case "e":
                 case "equals":
-                    $criteria[]    = $expr->eq($field, ':'.$paramName);
+                    $criteria[]    = $expr->eq($qualifier, ':'.$paramName);
                     $this->_builder->setParameter($paramName, $value);
                     break;
 
                 case "ne":
                 case "notEquals":
-                    $criteria[]    = $expr->neq($field, ':'.$paramName);
+                    $criteria[]    = $expr->neq($qualifier, ':'.$paramName);
                     $this->_builder->setParameter($paramName, $value);
                     break;
 
                 case "g":
                 case "greater":
-                    $criteria[]    = $expr->gt($field, ':'.$paramName);
+                    $criteria[]    = $expr->gt($qualifier, ':'.$paramName);
                     $this->_builder->setParameter($paramName, $value);
                     break;
 
                 case "ge":
                 case "greaterOrEquals":
-                    $criteria[]    = $expr->gte($field, ':'.$paramName);
+                    $criteria[]    = $expr->gte($qualifier, ':'.$paramName);
                     $this->_builder->setParameter($paramName, $value);
                     break;
 
                 case "l":
                 case "less":
-                    $criteria[]    = $expr->lt($field, ':'.$paramName);
+                    $criteria[]    = $expr->lt($qualifier, ':'.$paramName);
                     $this->_builder->setParameter($paramName, $value);
                     break;
 
                 case "le":
                 case "lessOrEquals":
-                    $criteria[]    = $expr->lte($field, ':'.$paramName);
+                    $criteria[]    = $expr->lte($qualifier, ':'.$paramName);
                     $this->_builder->setParameter($paramName, $value);
                     break;
 
                 case "n":
                 case "null":
-                    $criteria[]    = $expr->isNull($field);
+                    $criteria[]    = $expr->isNull($qualifier);
                     break;
 
                 case "nn":
                 case "notNull":
-                    $criteria[]    = $expr->isNotNull($field);
+                    $criteria[]    = $expr->isNotNull($qualifier);
                     break;
 
                 case "i":
@@ -195,7 +204,7 @@ class QueryBuilderWrapper implements Wrapper
                     if ( ! is_array( $value ) ) {
                         $value     = preg_split("/((\r(?!\n))|((?<!\r)\n)|(\r\n))/", $value, -1, PREG_SPLIT_NO_EMPTY);
                     }
-                    $criteria[]    = $expr->in($field, ':'.$paramName);
+                    $criteria[]    = $expr->in($qualifier, ':'.$paramName);
                     $this->_builder->setParameter($paramName, $value);
                     break;
             }
@@ -270,16 +279,14 @@ class QueryBuilderWrapper implements Wrapper
         return $this;
     }
 
-    protected function getFieldQualifier($alias)
+    protected function getField($alias)
     {
-//         var_dump(array_keys($this->_fields));
-//         exit;
         if (!isset($this->_fields[$alias])) {
             $alias = $this->_builder->getRootAlias().'.'.$alias; // if alias does not exist, try with default object alias
         }
         if (!isset($this->_fields[$alias])) {
             throw new \Exception('Unknown alias '.$alias);
         }
-        return $this->_fields[$alias]->getQualifier();
+        return $this->_fields[$alias];
     }
 }

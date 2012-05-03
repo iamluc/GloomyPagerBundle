@@ -75,7 +75,7 @@
 
 {# FILTERS #}
 
-{% macro filter(pager, alias) %}
+{% macro filter(pager, alias, type) %}
 
     {% set id = uniqid() %}
     {% set filtersVar = pager.getConfig('filtersVar') %}
@@ -93,7 +93,7 @@
         {% set attributs = "" %}
     {% endif %}
 
-    <div id="div_filter_{{ id }}" onmouseout="hideFiltersOpts( event, '{{ id }}' );" >
+    <div id="div_filter_{{ id }}" onmouseout="hideFiltersOpts( event, '{{ id }}' );">
 
         <div style="white-space: nowrap;">
 
@@ -106,7 +106,7 @@
             {# Valeur du champ #}
             <input  type="text"
                     id="input_filter_{{ id }}"
-                    class="gloomy-filters {{ attributs|raw }}"
+                    class="gloomy-filters {{ attributs|raw }} gloomy-filter-{{ type|default('string') }}"
 
                     name="{{ filtersVar }}[v][{{ alias }}]"
                     value="{{ value }}"
@@ -135,8 +135,10 @@
                         onchange="filtersOptsChanged( '{{ id }}' )"
                         onkeyup="submitEnter( event, this );">
 
-                    <option value="contains" {% if operator == "contains" %}selected="selected"{% endif %}>{{ 'Contains'|trans([], 'pager') }}</options>
-                    <option value="notContains" {% if operator == "notContains" %}selected="selected"{% endif %}>{{ 'Not Contains'|trans([], 'pager') }}</options>
+                    {% if type == 'string' %}
+                        <option value="contains" {% if operator == "contains" %}selected="selected"{% endif %}>{{ 'Contains'|trans([], 'pager') }}</options>
+                        <option value="notContains" {% if operator == "notContains" %}selected="selected"{% endif %}>{{ 'Not Contains'|trans([], 'pager') }}</options>
+                    {% endif %}
                     <option value="equals" {% if operator == "equals" %}selected="selected"{% endif %}>{{ 'Equals'|trans([], 'pager') }}</options>
                     <option value="notEquals" {% if operator == "notEquals" %}selected="selected"{% endif %}>{{ 'Not Equals'|trans([], 'pager') }}</options>
                     <option value="greater" {% if operator == "greater" %}selected="selected"{% endif %}>{{ 'Greater'|trans([], 'pager') }}</options>
@@ -147,6 +149,12 @@
                     <option value="notNull" {% if operator == "notNull" %}selected="selected"{% endif %}>{{ 'Not Null'|trans([], 'pager') }}</options>
                 </select>
 
+                {% if type == 'date' %}
+                    <div style="margin-top: 20px">
+                        {{ 'Date'|trans([], 'pager') }}
+                        <div id="div_date_{{ id }}" class="gloomy-filter-date-inline"></div>
+                    </div>
+                {% endif %}
             </div>
 
         </div>

@@ -19,22 +19,27 @@
 {% endblock collection_widget %}
 
 
+{% block collection_entity %}
+{% spaceless %}
+    {% if form.parent.vars.allow_delete %}
+        <a class="remove" href="#">
+            <img src="{{ asset('bundles/gloomypager/images/delete.png') }}" style="vertical-align: middle;" />
+        </a>
+    {% endif %}
+    {{ form_errors(form) }}
+    {{ form_widget(form) }}
+{% endspaceless %}
+{% endblock collection_entity %}
+
 
 {% block field_row %}
 {% spaceless %}
-
 {#
         {% if instanceof(form.parent.vars.value, 'Doctrine\\Common\\Collections\\Collection') %}
 #}
         {% if form.parent.vars.types[form.parent.vars.types|length - 1] == 'collection' %}
             <div class="collection_entity">
-                {% if form.parent.vars.allow_delete %}
-                    <a class="remove" href="#">
-                        <img src="{{ asset('bundles/gloomypager/images/delete.png') }}" style="vertical-align: middle;" />
-                    </a>
-                {% endif %}
-                {{ form_errors(form) }}
-                {{ form_widget(form) }}
+                {{ block('collection_entity') }}
             </div>
         {% else %}
             <div>
@@ -43,6 +48,5 @@
                 {{ form_widget(form) }}
             </div>
         {% endif %}
-
 {% endspaceless %}
 {% endblock field_row %}
