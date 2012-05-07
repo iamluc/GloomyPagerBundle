@@ -155,9 +155,13 @@ Add to deps file
 
 ```
 [GloomyPagerBundle]
-    git=git://github.com/iamluc/GloomyPagerBundle
+    git=http://github.com/iamluc/GloomyPagerBundle
     target=bundles/Gloomy/PagerBundle
 ```
+
+then run
+
+    php bin/vendors install --reinstall
 
 **OR downloading from github**
 
