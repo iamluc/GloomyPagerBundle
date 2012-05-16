@@ -230,7 +230,7 @@ class Crud
     protected function editAction($id)
     {
         $options          = array('url' => $this->_router->generate($this->_request->get('_route')));
-        $this->_formDatas = $this->_form->edit(new $this->_entityTypeClass, array($this->_entity, $id), array(), 'redirect', $options);
+        $this->_formDatas = $this->_form->edit(new $this->_entityTypeClass, array($this->_entity, (int) $id), array(), 'redirect', $options);
 
         if ($this->_formDatas instanceof Response) {
             $this->_session->setFlash('crud_success', $this->trans('Edition successful'));
@@ -242,7 +242,7 @@ class Crud
     protected function deleteAction($id)
     {
         $options          = array('url' => $this->_router->generate($this->_request->get('_route')));
-        $this->_formDatas = $this->_form->delete(array($this->_entity, $id), 'redirect', $options);
+        $this->_formDatas = $this->_form->delete(array($this->_entity, (int) $id), 'redirect', $options);
 
         if ($this->_formDatas instanceof Response) {
             $this->_session->setFlash('crud_success', $this->trans('Delete successful'));

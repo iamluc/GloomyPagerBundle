@@ -139,7 +139,7 @@ class Paginator
         // Item numbers
         $pages->currentItemCount = $this->getCurrentItemCount();
         $pages->itemCountPerPage = $itemCountPerPage;
-        $pages->totalItemCount   = $this->_wrapper->count();
+        $pages->totalItemCount   = $this->getNumberOfItems();
         $pages->firstItemNumber  = (($currentPageNumber - 1) * $this->getItemCountPerPage()) + 1;
         $pages->lastItemNumber   = $pages->firstItemNumber + $pages->currentItemCount - 1;
 

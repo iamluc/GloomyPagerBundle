@@ -65,7 +65,9 @@ class QueryBuilderWrapper implements Wrapper
     {
         if (is_null($this->_count)) {
             $builder        = clone $this->_builder;
-            $this->_count   = $builder->select('COUNT('.$builder->getRootAlias().')')
+            $this->_count   = $builder
+                ->select('COUNT('.$builder->getRootAlias().')')
+                ->resetDQLPart('orderBy')
                 ->getQuery()
                 ->getSingleScalarResult();
         }
