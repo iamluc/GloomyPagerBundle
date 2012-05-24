@@ -66,6 +66,7 @@ class Crud
                 'canDelete' => true,
                 'canAdd'    => true,
                 'canEdit'   => true,
+                'addToURL'  => array()
         );
         $this->_config     = array_merge($defaultConfig, $config);
 
@@ -190,16 +191,19 @@ class Crud
 
     protected function prepareListView()
     {
-        $this->_datagrid = $this->_datagridService->factory($this->_entity, array('rowIdVar' => $this->getConfig('idVar')));
+        $this->_datagrid = $this->_datagridService->factory($this->_entity, array(
+                'rowIdVar' => $this->getConfig('idVar'),
+                'addToURL' => $this->getConfig('addToURL'),
+        ));
 
         if ($this->getConfig('canAdd')) {
-            $this->_datagrid->addAction(new Action($this->trans('Add'), $this->_request->get('_route'), array($this->getConfig('viewVar') => 'add'), null, 'bundles/gloomypager/images/add.png'), 'add', 'toolbar');
+            $this->_datagrid->addAction(new Action($this->trans('Add'), $this->_request->get('_route'), array_merge($this->getConfig('addToURL'), array($this->getConfig('viewVar') => 'add')), null, 'bundles/gloomypager/images/add.png'), 'add', 'toolbar');
         }
         if ($this->getConfig('canEdit')) {
-            $this->_datagrid->addAction(new Action($this->trans('Edit'), $this->_request->get('_route'), array($this->getConfig('viewVar') => 'edit'), null, 'bundles/gloomypager/images/edit.png'), 'edit');
+            $this->_datagrid->addAction(new Action($this->trans('Edit'), $this->_request->get('_route'), array_merge($this->getConfig('addToURL'), array($this->getConfig('viewVar') => 'edit')), null, 'bundles/gloomypager/images/edit.png'), 'edit');
         }
         if ($this->getConfig('canDelete')) {
-            $this->_datagrid->addAction(new Action($this->trans('Delete'), $this->_request->get('_route'), array($this->getConfig('viewVar') => 'delete'), $this->trans('Confirm delete ?'), 'bundles/gloomypager/images/delete.png'), 'delete');
+            $this->_datagrid->addAction(new Action($this->trans('Delete'), $this->_request->get('_route'), array_merge($this->getConfig('addToURL'), array($this->getConfig('viewVar') => 'delete')), $this->trans('Confirm delete ?'), 'bundles/gloomypager/images/delete.png'), 'delete');
         }
 
         if ($this->_session->hasFlash('crud_success')) {
@@ -217,7 +221,7 @@ class Crud
 
     protected function addAction()
     {
-        $options          = array('url' => $this->_router->generate($this->_request->get('_route')));
+        $options          = array('url' => $this->_router->generate($this->_request->get('_route'), $this->getConfig('addToURL')));
         $this->_formDatas = $this->_form->create(new $this->_entityTypeClass, new $this->_entityClass, array(), 'redirect', $options);
 
         if ($this->_formDatas instanceof Response) {
@@ -229,8 +233,8 @@ class Crud
 
     protected function editAction($id)
     {
-        $options          = array('url' => $this->_router->generate($this->_request->get('_route')));
-        $this->_formDatas = $this->_form->edit(new $this->_entityTypeClass, array($this->_entity, (int) $id), array(), 'redirect', $options);
+        $options          = array('url' => $this->_router->generate($this->_request->get('_route'), $this->getConfig('addToURL')));
+        $this->_formDatas = $this->_form->edit(new $this->_entityTypeClass, array($this->_entity, $id), array(), 'redirect', $options);
 
         if ($this->_formDatas instanceof Response) {
             $this->_session->setFlash('crud_success', $this->trans('Edition successful'));
@@ -241,8 +245,8 @@ class Crud
 
     protected function deleteAction($id)
     {
-        $options          = array('url' => $this->_router->generate($this->_request->get('_route')));
-        $this->_formDatas = $this->_form->delete(array($this->_entity, (int) $id), 'redirect', $options);
+        $options          = array('url' => $this->_router->generate($this->_request->get('_route'), $this->getConfig('addToURL')));
+        $this->_formDatas = $this->_form->delete(array($this->_entity, $id), 'redirect', $options);
 
         if ($this->_formDatas instanceof Response) {
             $this->_session->setFlash('crud_success', $this->trans('Delete successful'));

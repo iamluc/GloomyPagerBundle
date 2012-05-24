@@ -135,7 +135,7 @@
                         onchange="filtersOptsChanged( '{{ id }}' )"
                         onkeyup="submitEnter( event, this );">
 
-                    {% if type == 'string' %}
+                    {% if type == 'string' or type == '' %}
                         <option value="contains" {% if operator == "contains" %}selected="selected"{% endif %}>{{ 'Contains'|trans([], 'pager') }}</options>
                         <option value="notContains" {% if operator == "notContains" %}selected="selected"{% endif %}>{{ 'Not Contains'|trans([], 'pager') }}</options>
                     {% endif %}

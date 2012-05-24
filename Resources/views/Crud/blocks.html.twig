@@ -43,12 +43,12 @@
         <h1>{{ 'Add'|trans({}, 'crud') }}</h1>
         <form {{ form_enctype(form) }}
               method="post"
-              action="{{ path( crud.route, array_combine( [crud.getConfig('viewVar')], ['add'] ) ) }}"
+              action="{{ path( crud.route, array_merge(crud.getConfig('addToURL'), array_combine( [crud.getConfig('viewVar')], ['add'] ) ) ) }}"
               >
             {{ crud_form(crud, form) }}
             <div class="gloomy-form-actions">
                 <input type="submit" value="{{ "Save"|trans([], 'crud') }}">
-                <input type="button" onclick="javascript:document.location.replace('{{ path(crud.route) }}')" value="{{ "Cancel"|trans([], 'crud') }}">
+                <input type="button" onclick="javascript:document.location.replace('{{ path(crud.route, crud.getConfig('addToURL')) }}')" value="{{ "Cancel"|trans([], 'crud') }}">
             </div>
         </form>
     </div>
@@ -60,12 +60,12 @@
         <h1>{{ 'Edit'|trans({}, 'crud') }}</h1>
         <form {{ form_enctype(form) }}
               method="post"
-              action="{{ path(crud.route, array_combine( [crud.getConfig('idVar'), crud.getConfig('viewVar')], [item.id, 'edit'] ) ) }}"
+              action="{{ path(crud.route, array_merge(crud.getConfig('addToURL'), array_combine( [crud.getConfig('idVar'), crud.getConfig('viewVar')], [item.id, 'edit'] ) ) ) }}"
               >
             {{ crud_form(crud, form) }}
             <div class="gloomy-form-actions">
                 <input type="submit" value="{{ "Save"|trans([], 'crud') }}">
-                <input type="button" onclick="javascript:document.location.replace('{{ path(crud.route) }}')" value="{{ "Cancel"|trans([], 'crud') }}">
+                <input type="button" onclick="javascript:document.location.replace('{{ path(crud.route, crud.getConfig('addToURL')) }}')" value="{{ "Cancel"|trans([], 'crud') }}">
             </div>
         </form>
     </div>
