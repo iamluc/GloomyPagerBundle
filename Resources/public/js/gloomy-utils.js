@@ -53,6 +53,7 @@ function gloomyAjaxUpdaterDialog()
                         }
 
     });
+    return ( false );
 }
 
 function gloomyAjaxDialogAction()
@@ -99,7 +100,7 @@ function gloomyAjaxDialogAction()
                             $.jGrowl('Une erreur est survenue', {theme: 'error'});
                         }
     });
-
+    return ( false );
 }
 
 function gloomyAjaxAction()
@@ -127,7 +128,7 @@ function gloomyAjaxAction()
                             $.jGrowl('Une erreur est survenue', {theme: 'error'});
                         }
     });
-
+    return ( false );
 }
 
 function gloomyFormURL(form)
