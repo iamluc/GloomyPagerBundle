@@ -182,7 +182,7 @@ class Pager
         return $this->getValue('itemsPerPageVar', $this->getConfig('itemsPerPage'));
     }
 
-    public function path($page = null, array $parameters = array())
+    public function path($page = null, array $parameters = array(), $route = null)
     {
         $default            = array(    $this->getConfig('pageVar')         => $page ? (int) $page : $this->getCurrentPageNumber(),
                                         $this->getConfig('orderByVar')      => $this->getValue('orderByVar'),
@@ -191,10 +191,11 @@ class Pager
                                         );
 
         $parameters         = array_merge($this->_addToURL, $default, $parameters);
-        return $this->_router->generate($this->_route, $parameters, false);
+        $route              = ($route) ? $route : $this->_route;
+        return $this->_router->generate($route, $parameters, false);
     }
 
-    public function pathOrderBy($orderBy, array $parameters = array(), $page = null)
+    public function pathOrderBy($orderBy, array $parameters = array(), $page = null, $route = null)
     {
         $default            = array(    $this->getConfig('pageVar')         => $page ? (int) $page : $this->getCurrentPageNumber(),
                                         $this->getConfig('orderByVar')      => $orderBy,
@@ -203,16 +204,18 @@ class Pager
                                         );
 
         $parameters         = array_merge($this->_addToURL, $default, $parameters);
-        return $this->_router->generate($this->_route, $parameters, false);
+        $route              = ($route) ? $route : $this->_route;
+        return $this->_router->generate($route, $parameters, false);
     }
 
-    public function pathForm($page = null, array $parameters = array())
+    public function pathForm($page = null, array $parameters = array(), $route = null)
     {
         $default            = array(    $this->getConfig('pageVar')         => $page ? (int) $page : $this->getCurrentPageNumber(),
                                         $this->getConfig('orderByVar')      => $this->getValue('orderByVar'),
                                         );
 
         $parameters         = array_merge($this->_addToURL, $default, $parameters);
-        return $this->_router->generate($this->_route, $parameters, false);
+        $route              = ($route) ? $route : $this->_route;
+        return $this->_router->generate($route, $parameters, false);
     }
 }
