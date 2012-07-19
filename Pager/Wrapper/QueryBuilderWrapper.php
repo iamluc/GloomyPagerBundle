@@ -66,7 +66,7 @@ class QueryBuilderWrapper implements Wrapper
         if (is_null($this->_count)) {
             $builder        = clone $this->_builder;
             $this->_count   = $builder
-                ->select('COUNT('.$builder->getRootAlias().')')
+                ->select('COUNT(DISTINCT '.$builder->getRootAlias().')')
                 ->resetDQLPart('orderBy')
                 ->getQuery()
                 ->getSingleScalarResult();
@@ -207,6 +207,15 @@ class QueryBuilderWrapper implements Wrapper
                         $value     = preg_split("/((\r(?!\n))|((?<!\r)\n)|(\r\n))/", $value, -1, PREG_SPLIT_NO_EMPTY);
                     }
                     $criteria[]    = $expr->in($qualifier, ':'.$paramName);
+                    $this->_builder->setParameter($paramName, $value);
+                    break;
+
+                case "ni":
+                case "notIn":
+                    if ( ! is_array( $value ) ) {
+                        $value     = preg_split("/((\r(?!\n))|((?<!\r)\n)|(\r\n))/", $value, -1, PREG_SPLIT_NO_EMPTY);
+                    }
+                    $criteria[]    = $expr->not($expr->in($qualifier, ':'.$paramName));
                     $this->_builder->setParameter($paramName, $value);
                     break;
             }
