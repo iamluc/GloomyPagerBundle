@@ -64,6 +64,7 @@ function gloomyAjaxDialogAction()
     var form        = options['form'] || $(dialog).find('form:first');
     var spinner     = options['spinner'] || null;
     var onsuccess   = options['onsuccess'] || function() {};
+    var onformerror = options['onformerror'] || function() {};
 
     $(spinner).show();
     $.ajax({type: 'POST',
@@ -93,6 +94,7 @@ function gloomyAjaxDialogAction()
                             else {
                                 $.jGrowl('Le formulaire comporte des erreurs', {theme: 'warning'});
                                 $(dialog).html(data);
+                            	onformerror();
                             }
                         },
               error: function () {
