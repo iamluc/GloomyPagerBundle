@@ -1,4 +1,3 @@
-
 {% block crud %}
     {{ crud_stylesheets(crud) }}
     {{ crud_javascripts(crud) }}
@@ -73,6 +72,6 @@
 
 
 {% block crud_form %}
-    {% form_theme form 'GloomyPagerBundle:Form:form_layout.html.twig' %}
+{#     {% form_theme form 'GloomyPagerBundle:Form:form_layout.html.twig' %}#}
     {{ form_widget(form) }}
 {% endblock %}
