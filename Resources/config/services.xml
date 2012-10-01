@@ -36,6 +36,24 @@
             <argument type="service" id="translator" />
         </service>
 
+        <service id="gloomy.rest_connector.datatables" class="Gloomy\PagerBundle\Service\RESTConnectorService" scope="request">
+            <argument>DataTables</argument>
+            <argument type="service" id="request" />
+            <argument type="service" id="gloomy.pager" />
+        </service>
+
+        <service id="gloomy.rest_connector.jqgrid" class="Gloomy\PagerBundle\Service\RESTConnectorService" scope="request">
+            <argument>jqGrid</argument>
+            <argument type="service" id="request" />
+            <argument type="service" id="gloomy.pager" />
+        </service>
+
+        <service id="gloomy.rest_connector.slickgrid" class="Gloomy\PagerBundle\Service\RESTConnectorService" scope="request">
+            <argument>SlickGrid</argument>
+            <argument type="service" id="request" />
+            <argument type="service" id="gloomy.pager" />
+        </service>
+
         <service id="gloomy.twig.extension" class="Gloomy\PagerBundle\Twig\GloomyExtension">
         	<tag name="twig.extension" />
             <argument type="service" id="router" />
