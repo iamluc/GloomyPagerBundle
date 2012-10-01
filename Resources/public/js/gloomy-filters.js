@@ -86,11 +86,8 @@
 
     function resetFilter( id ) {
 
-        input           = jQuery('#input_filter_'+id);
-        input[0].value  = '';
-
-        select          = jQuery('#select_filter_'+id);
-        select[0].value = 'contains';
+        input           = jQuery('#input_filter_'+id).val('');
+        select          = jQuery('#select_filter_'+id).val('contains');
 
         filtersOptsChanged(id);
     }

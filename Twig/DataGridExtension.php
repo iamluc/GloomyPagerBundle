@@ -101,125 +101,98 @@ class DataGridExtension extends \Twig_Extension
         throw new \Exception('Block '.$block.' not found');
     }
 
-    public function renderDataGrid($datagrid, $title = null)
+    public function renderDataGrid($datagrid, $title = null, $params = array())
     {
         if (!is_null($title)) {
             $datagrid->setTitle($title);
         }
-        return $this->render($datagrid, 'datagrid');
+        return $this->render($datagrid, 'datagrid', $params);
     }
 
-    public function renderJavascripts($datagrid)
+    public function renderJavascripts($datagrid, $params = array())
     {
-        return $this->render($datagrid, 'datagrid_javascripts');
+        return $this->render($datagrid, 'datagrid_javascripts', $params);
     }
 
-    public function renderStyleSheets($datagrid)
+    public function renderStyleSheets($datagrid, $params = array())
     {
-        return $this->render($datagrid, 'datagrid_stylesheets');
+        return $this->render($datagrid, 'datagrid_stylesheets', $params);
     }
 
-    public function renderContent($datagrid, $title = null)
+    public function renderContent($datagrid, $title = null, $params = array())
     {
         if (!is_null($title)) {
             $datagrid->setTitle($title);
         }
-        return $this->render($datagrid, 'datagrid_content');
+        return $this->render($datagrid, 'datagrid_content', $params);
     }
 
-    public function renderHeader($datagrid)
+    public function renderHeader($datagrid, $params = array())
     {
-        return $this->render($datagrid, 'datagrid_header');
+        return $this->render($datagrid, 'datagrid_header', $params);
     }
 
-    public function renderBody($datagrid)
+    public function renderBody($datagrid, $params = array())
     {
-        return $this->render($datagrid, 'datagrid_body');
+        return $this->render($datagrid, 'datagrid_body', $params);
     }
 
-    public function renderFooter($datagrid)
+    public function renderFooter($datagrid, $params = array())
     {
-        return $this->render($datagrid, 'datagrid_footer');
+        return $this->render($datagrid, 'datagrid_footer', $params);
     }
 
-    public function renderPaginate($datagrid)
+    public function renderPaginate($datagrid, $params = array())
     {
-        return $this->render($datagrid, 'datagrid_paginate');
+        return $this->render($datagrid, 'datagrid_paginate', $params);
     }
 
-    public function renderItemsPerPage($datagrid)
+    public function renderItemsPerPage($datagrid, $params = array())
     {
-        return $this->render($datagrid, 'datagrid_items_per_page');
+        return $this->render($datagrid, 'datagrid_items_per_page', $params);
     }
 
-    public function renderRowOrderBy($datagrid)
+    public function renderRowOrderBy($datagrid, $params = array())
     {
-        return $this->render($datagrid, 'datagrid_row_order_by');
+        return $this->render($datagrid, 'datagrid_row_order_by', $params);
     }
 
-    public function renderRowFilters($datagrid)
+    public function renderRowFilters($datagrid, $params = array())
     {
-        return $this->render($datagrid, 'datagrid_row_filters');
+        return $this->render($datagrid, 'datagrid_row_filters', $params);
     }
 
-    public function renderRowValues($datagrid, $item)
+    public function renderRowValues($datagrid, $item, $params = array())
     {
-        return $this->render($datagrid, 'datagrid_row_values', array('item' => $item));
+        return $this->render($datagrid, 'datagrid_row_values', array_merge($params, array('item' => $item)));
     }
 
-    public function renderColumnOrderBy($datagrid, $field, $alias)
+    public function renderColumnOrderBy($datagrid, $field, $alias, $params = array())
     {
         $blocks = array('datagrid_column_order_by__'.$this->sanitizeAlias($alias), 'datagrid_column_order_by');
-        return $this->render($datagrid, $blocks, array('field' => $field, 'alias' => $alias));
+        return $this->render($datagrid, $blocks, array_merge($params, array('field' => $field, 'alias' => $alias)));
     }
 
-    public function renderColumnFilter($datagrid, $field, $alias)
+    public function renderColumnFilter($datagrid, $field, $alias, $params = array())
     {
         $blocks = array('datagrid_column_filter__'.$this->sanitizeAlias($alias), 'datagrid_column_filter');
-        return $this->render($datagrid, $blocks, array('field' => $field, 'alias' => $alias));
+        return $this->render($datagrid, $blocks, array_merge($params, array('field' => $field, 'alias' => $alias)));
     }
 
-    public function renderColumnAction($datagrid, $item)
+    public function renderColumnAction($datagrid, $item, $params = array())
     {
-        return $this->render($datagrid, 'datagrid_column_action', array('item' => $item));
+        return $this->render($datagrid, 'datagrid_column_action', array_merge($params, array('item' => $item)));
     }
 
-    public function renderColumnValue($datagrid, $field, $item, $alias)
+    public function renderColumnValue($datagrid, $field, $item, $alias, $params = array())
     {
         $blocks = array('datagrid_column_value__'.$this->sanitizeAlias($alias), 'datagrid_column_value');
-        return $this->render($datagrid, $blocks, array('item' => $item, 'field' => $field, 'alias' => $alias));
+        return $this->render($datagrid, $blocks, array_merge($params, array('item' => $item, 'field' => $field, 'alias' => $alias)));
     }
 
     public function renderItemValue($datagrid, $field, $item)
     {
-        $accessors = array();
-        $options   = $field->getOptions();
-        if (isset($options['tree']) && $options['tree']) {
-            $accessors = explode('.', $field->getProperty());
-        }
-        else {
-            $accessors[] = $field->getProperty();
-        }
-
-        foreach ($accessors as $property) {
-            if (is_null($item)) {
-                return null;
-            }
-            elseif (is_array($item)) {
-                $item = $item[$property];
-            }
-            else {
-                $item = call_user_func_array(array($item, 'get'.ucfirst($property)), array());
-            }
-        }
-
-        if ($item instanceOf \DateTime) {
-            return $item->format($field->getDateFormat());
-        }
-//         elseif ($field->getType() === 'date') {
-//         }
-
-        return $item;
+        return $field->readData($item);
     }
 
     protected function sanitizeAlias($alias)

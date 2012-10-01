@@ -103,4 +103,36 @@ class Field
     {
         return $this->_visible;
     }
+
+    public function readData($item)
+    {
+        $accessors = array();
+        if (isset($this->_options['tree']) && $this->_options['tree']) {
+            $accessors = explode('.', $this->getProperty());
+        }
+        else {
+            $accessors[] = $this->getProperty();
+        }
+
+        foreach ($accessors as $property) {
+            if (is_null($item)) {
+                return null;
+            }
+            elseif (is_array($item)) {
+                $item = $item[$property];
+            }
+            elseif (method_exists($item, 'get'.ucfirst($property))) {
+                $item = call_user_func_array(array($item, 'get'.ucfirst($property)), array());
+            }
+            else {
+                return null;
+            }
+        }
+
+        if ($item instanceOf \DateTime) {
+            return $item->format($this->getDateFormat());
+        }
+
+        return $item;
+    }
 }
