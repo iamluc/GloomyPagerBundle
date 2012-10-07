@@ -121,11 +121,10 @@ class Field
             elseif (is_array($item)) {
                 $item = $item[$property];
             }
-            elseif (method_exists($item, 'get'.ucfirst($property))) {
-                $item = call_user_func_array(array($item, 'get'.ucfirst($property)), array());
-            }
             else {
-                return null;
+                if (!$item = call_user_func_array(array($item, 'get'.ucfirst($property)), array())) {
+                    return null;
+                }
             }
         }
 
