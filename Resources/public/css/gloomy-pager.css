@@ -121,7 +121,7 @@ table.gloomy-pager tr:hover, table.gloomy-pager tr:hover td {
     margin-right: 					20px;
 }
 
-.gloomy-form input, textarea, select {
+.gloomy-form input, .gloomy-form textarea, .gloomy-form select {
     border:             			1px solid #C9C9C9;
     margin:             			2px;
 }
