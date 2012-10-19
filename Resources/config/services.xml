@@ -54,6 +54,12 @@
             <argument type="service" id="gloomy.pager" />
         </service>
 
+        <service id="gloomy.rest_connector.autocomplete" class="Gloomy\PagerBundle\Service\RESTConnectorService" scope="request">
+            <argument>Autocomplete</argument>
+            <argument type="service" id="request" />
+            <argument type="service" id="gloomy.pager" />
+        </service>
+
         <service id="gloomy.twig.extension" class="Gloomy\PagerBundle\Twig\GloomyExtension">
         	<tag name="twig.extension" />
             <argument type="service" id="router" />
