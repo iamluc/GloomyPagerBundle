@@ -128,7 +128,7 @@ class MongoDBWrapper extends QueryBuilderWrapper implements Wrapper
 //                     break;
 
                 case "e":
-                case "equals":
+                case "equals";
                     $criteria[]    = $expr->field($qualifier)->equals($value);
                     break;
 
