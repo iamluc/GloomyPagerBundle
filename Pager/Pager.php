@@ -114,7 +114,6 @@ class Pager
         $this->_paginator->setPageRange((int) $this->getConfig('pageRange'));
     }
 
-
     public function getWrapper()
     {
         return $this->_wrapper;

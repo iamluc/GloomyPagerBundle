@@ -8,6 +8,7 @@ use Gloomy\PagerBundle\RESTConnector\DataTables;
 use Gloomy\PagerBundle\RESTConnector\jqGrid;
 use Gloomy\PagerBundle\RESTConnector\SlickGrid;
 use Gloomy\PagerBundle\RESTConnector\Autocomplete;
+use Gloomy\PagerBundle\RESTConnector\Datatheke;
 
 use Gloomy\PagerBundle\Pager\Pager;
 
@@ -42,6 +43,10 @@ class RESTConnectorService {
 
             case "Autocomplete":
                 return new Autocomplete($this->_request, $pager, $config);
+                break;
+
+            case "Datatheke":
+                return new Datatheke($this->_request, $pager, $config);
                 break;
 
             default:
