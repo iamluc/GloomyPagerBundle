@@ -4,11 +4,12 @@ namespace Gloomy\PagerBundle\RESTConnector;
 
 use Symfony\Component\HttpFoundation\Response;
 
-class jqGrid
+class jqGrid extends RESTBase
 {
     public function __construct($request, $pager)
     {
-        $this->_request = $request;
+        parent::__construct($request);
+
         $this->_pager   = $pager;
     }
 
@@ -72,7 +73,7 @@ class jqGrid
                 "rows" => $datas
                 );
 
-        return new Response(json_encode($response));
+        return $this->response($response);
     }
 
     protected function operatorConvert($operator)

@@ -4,11 +4,12 @@ namespace Gloomy\PagerBundle\RESTConnector;
 
 use Symfony\Component\HttpFoundation\Response;
 
-class Datatheke
+class Datatheke extends RESTBase
 {
     public function __construct($request, $pager, $config = array())
     {
-        $this->_request = $request;
+        parent::__construct($request);
+
         $this->_pager   = $pager;
     }
 
@@ -32,8 +33,9 @@ class Datatheke
         // Response
         switch ($this->_request->get('action', null)) {
 
+            default:
             case 'count':
-                return new Response(json_encode(array('count' => (int) $wrapper->count())));
+                return $this->response(array('count' => (int) $wrapper->count()));
                 break;
 
             case 'fields':
@@ -47,7 +49,7 @@ class Datatheke
                             'options' => $field->getOptions()
                             );
                 }
-                return new Response(json_encode(array('fields' => $fields)));
+                return $this->response(array('fields' => $fields));
                 break;
 
             case 'items':
@@ -59,7 +61,7 @@ class Datatheke
                     }
                     $items[] = $tmp;
                 }
-                return new Response(json_encode(array('items' => $items, 'debug' => $this->_request->get('filters', array()))));
+                return $this->response(array('items' => $items, 'debug' => $this->_request->get('filters', array())));
                 break;
         }
     }

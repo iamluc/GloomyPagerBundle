@@ -4,11 +4,12 @@ namespace Gloomy\PagerBundle\RESTConnector;
 
 use Symfony\Component\HttpFoundation\Response;
 
-class Autocomplete
+class Autocomplete extends RESTBase
 {
     public function __construct($request, $pager, array $config = array())
     {
-        $this->_request = $request;
+        parent::__construct($request);
+
         $this->_pager   = $pager;
 
         $defaultConfig  = array(
@@ -86,8 +87,6 @@ class Autocomplete
             $datas[] = $item;
         }
 
-        $response = $datas;
-
-        return new Response(json_encode($response));
+        return $this->response($datas);
     }
 }
