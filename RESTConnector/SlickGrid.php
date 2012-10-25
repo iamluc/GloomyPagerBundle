@@ -2,15 +2,11 @@
 
 namespace Gloomy\PagerBundle\RESTConnector;
 
-use Symfony\Component\HttpFoundation\Response;
-
 class SlickGrid extends RESTBase
 {
-    public function __construct($request, $pager)
+    public function __construct($request, $pager, array $config = array())
     {
-        parent::__construct($request);
-
-        $this->_pager   = $pager;
+        parent::__construct($request, $pager, $config);
     }
 
     public function handle()
@@ -57,6 +53,6 @@ class SlickGrid extends RESTBase
                 "stories" => $datas
                 );
 
-        return $this->response($response);
+        return $this->jsonResponse($response);
     }
 }

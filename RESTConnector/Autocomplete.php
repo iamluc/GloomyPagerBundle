@@ -2,24 +2,19 @@
 
 namespace Gloomy\PagerBundle\RESTConnector;
 
-use Symfony\Component\HttpFoundation\Response;
-
 class Autocomplete extends RESTBase
 {
     public function __construct($request, $pager, array $config = array())
     {
-        parent::__construct($request);
-
-        $this->_pager   = $pager;
-
         $defaultConfig  = array(
-                'return' => array('value', 'label'),
-                'mapping' => array(
-                        'value' => array('label', 'name', 'value', 'id'),    // try in this order
-                        'label' => array('label', 'name', 'value', 'id')     // try in this order
-                        )
-                );
-        $this->_config = array_merge($defaultConfig, $config);
+                'return' => null, //array('value', 'label'),
+//                 'mapping' => array(
+//                         'value' => array('label', 'name', 'value', 'id'),    // try in this order
+//                         'label' => array('label', 'name', 'value', 'id')     // try in this order
+//                 )
+        );
+
+        parent::__construct($request, $pager, array_merge($defaultConfig, $config));
     }
 
     public function handle()
@@ -87,6 +82,6 @@ class Autocomplete extends RESTBase
             $datas[] = $item;
         }
 
-        return $this->response($datas);
+        return $this->jsonResponse($datas);
     }
 }
