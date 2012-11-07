@@ -1,123 +1,101 @@
 
-    function showFiltersOpts( id ) {
+function showFiltersOpts( id ) {
 
-        container   = jQuery('#div_container_'+id);
-        input       = jQuery('#input_filter_'+id);
-        option      = jQuery('#div_opt_'+id);
+    container   = $('#div_container_'+id);
+    input       = $('#input_filter_'+id);
+    option      = $('#div_opt_'+id);
 
-        if ( container.is(':visible') ) {
-            return;
-        }
-
-        // TAILLE DE LA DIV
-        size                = input.outerWidth() - 22; // 22 ? padding, border ???
-        if ( size < 310 ) {
-            size        = 310;
-        }
-        option.width(size);
-
-        // PLACEMENT DE LA DIV
-        inputPosition       = input.offset();
-        inputPosition.left  -= 10; // Déplacement à cause du padding
-        inputPosition.top   += input.outerHeight();
-        container.fadeIn(); // La DIV doit être visible avant l'appel à la fonction offset pour qu'elle fonctionne
-        container.offset(inputPosition);
-
-        // MASQUER LES AUTRES DIV
-        divs        = jQuery('body div[id*=div_container_]');
-        divs.each(function(index, element) { if (element.id != 'div_container_'+id )jQuery(element).fadeOut() });
+    if ( container.is(':visible') ) {
+        return;
     }
 
-    function isRelated( obj, container ) {
+    // TAILLE DE LA DIV
+    size                = input.outerWidth() - 22; // 22 ? padding, border ???
+    if ( size < 220 ) {
+        size        = 220;
+    }
+    option.width(size);
 
-        if ( ! obj ) return ( true );       // ??
+    // PLACEMENT DE LA DIV
+    inputPosition       = input.offset();
+    inputPosition.left  -= 10; // Déplacement à cause du padding
+    inputPosition.top   += input.outerHeight();
+    container.fadeIn(); // La DIV doit être visible avant l'appel à la fonction offset pour qu'elle fonctionne
+    container.offset(inputPosition);
 
-        while ( obj != container && obj.nodeName != 'BODY' ) {
-            obj     = obj.parentNode
-            if ( ! obj ) return ( true );   // ??
-        }
+    // MASQUER LES AUTRES DIV
+    divs        = $('body div[id*=div_container_]');
+    divs.each(function(index, element) { if (element.id != 'div_container_'+id ) $(element).fadeOut() });
+}
 
-        if ( obj.id == container.id ) {
-            return ( true );
-        }
+function isRelated( obj, container ) {
 
-        return ( false );
+    if ( ! obj ) return ( true );       // ??
+
+    while ( obj != container && obj.nodeName != 'BODY' ) {
+        obj     = obj.parentNode
+        if ( ! obj ) return ( true );   // ??
     }
 
-    function hideFiltersOpts( e, id ) {
-
-        filter      = jQuery('#div_filter_'+id);
-        container   = jQuery('#div_container_'+id);
-
-        // http://www.quirksmode.org/js/events_mouse.html
-        if ( ! e ) var e = window.event;
-        var tg      = (window.event) ? e.srcElement : e.target;
-        var reltg   = (e.relatedTarget) ? e.relatedTarget : e.toElement;
-        if ( isRelated( reltg, filter[0] ) ) {
-            return ( true );
-        }
-
-        if ( container.is(':visible') ) {
-            container.fadeOut();
-        }
+    if ( obj.id == container.id ) {
+        return ( true );
     }
 
-    function filtersOptsChanged( id ) {
+    return ( false );
+}
 
-        select      = jQuery('#select_filter_'+id);
-        input       = jQuery('#input_filter_'+id);
-        clear       = jQuery('#clear_filter_'+id);
+function hideFiltersOpts( e, id ) {
 
-        if ( select.val() == 'null' || select.val() == 'notNull' ) {
-        	input.attr('class', 'gloomy-filters notNullFilter');
-            clear[0].style.visibility   = 'hidden';
-        }
-        else if ( input.val() ) {
-        	input.attr('class', 'gloomy-filters textFilter');
-            clear[0].style.visibility   = 'visible';
-        }
-        else {
-        	input.attr('class', 'gloomy-filters');
-            clear[0].style.visibility   = 'hidden';
-        }
+    filter      = $('#div_filter_'+id);
+    container   = $('#div_container_'+id);
 
-        input[0].focus();
+    // http://www.quirksmode.org/js/events_mouse.html
+    if ( ! e ) var e = window.event;
+    var tg      = (window.event) ? e.srcElement : e.target;
+    var reltg   = (e.relatedTarget) ? e.relatedTarget : e.toElement;
+    if ( isRelated( reltg, filter[0] ) ) {
+        return ( true );
     }
 
-    function resetFilter( id ) {
+    if ( container.is(':visible') ) {
+        container.fadeOut();
+    }
+}
 
-        input           = jQuery('#input_filter_'+id).val('');
-        select          = jQuery('#select_filter_'+id).val('contains');
+function filtersOptsChanged( id ) {
 
-        filtersOptsChanged(id);
+    select      = $('#select_filter_'+id);
+    input       = $('#input_filter_'+id);
+    clear       = $('#clear_filter_'+id);
+
+    if ( select.val() == 'null' || select.val() == 'notNull' ) {
+    	input.attr('class', 'gloomy-filters notNullFilter');
+        clear[0].style.visibility   = 'hidden';
+    }
+    else if ( input.val() ) {
+    	input.attr('class', 'gloomy-filters textFilter');
+        clear[0].style.visibility   = 'visible';
+    }
+    else {
+    	input.attr('class', 'gloomy-filters');
+        clear[0].style.visibility   = 'hidden';
     }
 
-    function clearFilters() {
+    input[0].focus();
+}
 
-//        listInputs  = $$('input.filters');      // TODO: detection par la classe pas beau !!
-//
-//        for ( i = 0; i < listInputs.length; i++ ) {
-//            listInputs[i].value     = '';
-//
-//            // Remettre l'opérateur sur le premier élément
-//            idInput     = listInputs[i].id;
-//            idSelect    = idInput.replace( 'input_filter_', 'select_filter_' );
-//            if ( $( idSelect ) ) {
-//                $( idSelect ).selectedIndex = 0;
-//            }
-//        }
-    }
+function resetFilter( id ) {
 
-    function submitEnter( event, input ) {
+    input           = $('#input_filter_'+id).val('');
+    select          = $('#select_filter_'+id).val('contains');
 
-        if ( event && event.keyCode == 13 ) {
-            if (input.form.onsubmit) {
-                if (input.form.onsubmit()) {
-                    input.form.submit();
-                }
-            }
-            else {
-                input.form.submit();
-            }
-        }
-    }
+    filtersOptsChanged(id);
+}
+
+function submitEnter( event, input ) {
+
+	return true;
+    //if ( event && event.keyCode == 13 ) {
+    //	$(input.form).submit();
+    //}
+}

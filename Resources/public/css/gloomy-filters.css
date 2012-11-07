@@ -1,0 +1,49 @@
+.gloomy-filters {
+    width: 100%;
+    display: inline;
+    border: 1px solid #C9C9C9;
+    
+	height: 30px !important;
+	margin: 0 !important;
+
+    -webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+            box-sizing: border-box;
+}
+
+.gloomy-filters.textFilter {
+    border: 1px solid #FF9A07;
+}
+
+.gloomy-filters.notNullFilter {
+    border: 1px solid red;
+}
+
+.gloomy-filtersContainer {
+	display: none;
+    background-image: url( ../img/transparent.gif ); /* Transparent image to prevent IE from launching "onmouseout" */
+    position: absolute;
+    padding: 0px 10px 160px 10px; /* Large padding-bottom to block mouseout */
+	text-align: center;
+}
+
+.gloomy-filtersOptions {
+    padding: 10px;
+    margin: 0px;
+    position: relative;
+    background-color: white;
+    border: 1px solid #DDDDDD;
+    -webkit-border-radius: 0px 0px 20px 20px;
+       -moz-border-radius: 0px 0px 20px 20px;
+            border-radius: 0px 0px 20px 20px;    
+
+/*     opacity:                        0.8; */
+/*     filter:                         alpha(opacity=80); */
+/*     -ms-filter:                     "alpha(opacity=80)"; */
+}
+
+.gloomy-clearFilters {
+    position: relative;
+    left: -23px;
+    top: 1px;
+}

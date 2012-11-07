@@ -3,30 +3,46 @@
 
 {% macro paginate(pager, attributs) %}
 
-    <div class="gloomy-pagination">
+    <div class="pagination pagination-right">
+        <ul>
+            {% if pager.pages.first not in pager.pages.pagesInRange %}
+                <li>
+                    <a {{ attributs|raw }} href="{{ pager.path(pager.pages.first) }}">{{ pager.pages.first }}</a>
+                </li>
+            {% endif %}
 
-        {% if pager.pages.first not in pager.pages.pagesInRange %}
-            <a {{ attributs|raw }} href="{{ pager.path(pager.pages.first) }}">{{ pager.pages.first }}</a>
-        {% endif %}
+            {% if pager.pages.previous is defined %}
+                <li>
+                    <a {{ attributs|raw }} href="{{ pager.path(pager.pages.previous) }}">«</a>
+                </li>
+            {% endif %}
 
-        {% if pager.pages.previous is defined %}
-            <a {{ attributs|raw }} href="{{ pager.path(pager.pages.previous) }}">«</a>
-        {% endif %}
+            {% if pager.pages.last == 0 %}
+                <li>
+                    <a {{ attributs|raw }} href="{{ pager.path(pager.pages.last) }}" class="active">{{ pager.pages.last }}</a>
+                </li>
+            {% else %}
+                {% for page in pager.pages.pagesInRange %}
+                    <li>
+                        <a {{ attributs|raw }} href="{{ pager.path(page) }}" {% if page == pager.pages.current %}class="active"{% endif %}>{{ page }}</a>
+                    </li>
+                {% endfor %}
+            {% endif %}
 
-        {% if pager.pages.last == 0 %}
-            <a {{ attributs|raw }} href="{{ pager.path(pager.pages.last) }}" class="active">{{ pager.pages.last }}</a>
-        {% else %}
-            {% for page in pager.pages.pagesInRange %}
-                <a {{ attributs|raw }} href="{{ pager.path(page) }}" {% if page == pager.pages.current %}class="active"{% endif %}>{{ page }}</a>
-            {% endfor %}
-        {% endif %}
+            {% if pager.pages.next is defined %}
+                <li>
+                    <a {{ attributs|raw }} href="{{ pager.path(pager.pages.next) }}">»</a>
+                </li>
+            {% endif %}
 
-        {% if pager.pages.next is defined %}
-            <a {{ attributs|raw }} href="{{ pager.path(pager.pages.next) }}">»</a>
-        {% endif %}
+            <li class="disabled">
+                <span>/</span>
+            </li>
 
-        / <a {{ attributs|raw }} href="{{ pager.path(pager.pages.last) }}">{{ pager.pages.last }}</a>
-
+            <li>
+                <a {{ attributs|raw }} href="{{ pager.path(pager.pages.last) }}">{{ pager.pages.last }}</a>
+            </li>
+        </ul>
     </div>
 
 {% endmacro %}
@@ -41,12 +57,12 @@
         {% if pager.OrderBy[alias]|lower == 'desc' %}
             <a {{ attributs|raw }} href="{{ pager.pathOrderBy( array_combine( [alias], ['asc'] ) ) }}">
                 {{ label }}
-                <img src="{{ asset('bundles/gloomypager/images/sort-desc.png') }}" style="vertical-align: middle;" />
+                <i class="icon-chevron-up"></i>
             </a>
         {% else %}
             <a {{ attributs|raw }} href="{{ pager.pathOrderBy( array_combine( [alias], ['desc'] ) ) }}">
                 {{ label }}
-                <img src="{{ asset('bundles/gloomypager/images/sort-asc.png') }}" style="vertical-align: middle;" />
+                <i class="icon-chevron-down"></i>
             </a>
         {% endif %}
     {% else %}
@@ -63,11 +79,71 @@
 
 {% macro itemsPerPage(pager) %}
 
-    <select name="{{ pager.getConfig('itemsPerPageVar') }}" onchange="if (this.form.onsubmit) this.form.onsubmit(); else this.form.submit();">
+    <select class="input-small" name="{{ pager.getConfig('itemsPerPageVar') }}" onchange="$(this.form).submit();">
         {% for nb in pager.getConfig('itemsPerPageChoices') %}
             <option value="{{ nb }}" {% if pager.itemsPerPage == nb %}selected="selected"{% endif %}>{{ nb }}</option>
         {% endfor %}
     </select>
+
+{% endmacro %}
+
+
+
+{# ITEMS PER PAGE DROPDOWN #}
+
+{% macro itemsPerPageDropdown(pager) %}
+
+    {% import _self as base %}
+
+    <div class="btn-group">
+        <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+            {{ base.resultsRange(pager) }}
+            <span class="caret"></span>
+        </button>
+
+        <ul class="dropdown-menu">
+            {% for nb in pager.getConfig('itemsPerPageChoices') %}
+                <li>
+                    <a href="{{ pager.path(null, array_combine( [pager.getConfig('itemsPerPageVar')], [nb] )) }}">
+                        {% if pager.itemsPerPage == nb %}
+                            <strong>{{ nb }}</strong>
+                        {% else %}
+                            {{ nb }}
+                        {% endif %}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+{% endmacro %}
+
+
+
+{# RESULTS RANGE #}
+
+{% macro resultsRange(pager) %}
+
+    {% if pager.pages.totalItemCount %}
+        {{ '%first% to %last% on %total%'|trans({'%first%': pager.pages.firstItemNumber, '%last%': pager.pages.lastItemNumber, '%total%': pager.pages.totalItemCount}, 'pager') }}
+    {% else %}
+        {{ 'No data to display'|trans({}, 'pager') }}
+    {% endif %}
+
+{% endmacro %}
+
+
+
+{# REFRESH #}
+
+{% macro refresh(pager) %}
+
+    <div class="btn-group">
+        <a class="btn" href="{{ pager.path() }}">
+            <i class="icon-refresh"></i>
+            {{ 'Refresh'|trans({}, 'pager') }}
+        </a>
+    </div>
 
 {% endmacro %}
 
@@ -117,8 +193,8 @@
                     />
 
             <span class="gloomy-clearFilters" id="clear_filter_{{ id }}" {% if not showClearButton %}style="visibility: hidden;"{% endif %}>
-                <a href="#" onclick="resetFilter( '{{ id }}' );">
-                    <img src="{{ asset('bundles/gloomypager/images/clear_input.png') }}">
+                <a href="#" onclick="resetFilter( '{{ id }}' ); return false;">
+                    <i class="icon-remove"></i>
                 </a>
             </span>
 
@@ -128,7 +204,6 @@
 
             <div id="div_opt_{{ id }}" class="gloomy-filtersOptions">
 
-                {{ 'Operator'|trans([], 'pager') }}
                 <select id="select_filter_{{ id }}"
                         name="{{ filtersVar }}[o][{{ alias }}]"
 

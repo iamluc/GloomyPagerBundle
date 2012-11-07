@@ -38,6 +38,8 @@ class Crud
 
     protected $_route;
 
+    protected $_title;
+
     public function __construct(
             $request, $router, $doctrine, $templating, $translator, $session,
             $datagridService, $form, $entity, $entityType = null, $config = array())
@@ -117,8 +119,15 @@ class Crud
         }
     }
 
+    public function getTitle()
+    {
+        return $this->_title;
+    }
+
     public function setTitle($title)
     {
+        $this->_title = $title;
+
         if (!is_null($this->getDatagrid())) {
             $this->getDatagrid()->setTitle($title);
         }
@@ -197,13 +206,13 @@ class Crud
         ));
 
         if ($this->getConfig('canAdd')) {
-            $this->_datagrid->addAction(new Action($this->trans('Add'), $this->_request->get('_route'), array_merge($this->getConfig('addToURL'), array($this->getConfig('viewVar') => 'add')), null, 'bundles/gloomypager/images/add.png'), 'add', 'toolbar');
+            $this->_datagrid->addAction(new Action($this->trans('Add'), $this->_request->get('_route'), array_merge($this->getConfig('addToURL'), array($this->getConfig('viewVar') => 'add')), null, '#icon-plus'), 'add', 'toolbar');
         }
         if ($this->getConfig('canEdit')) {
-            $this->_datagrid->addAction(new Action($this->trans('Edit'), $this->_request->get('_route'), array_merge($this->getConfig('addToURL'), array($this->getConfig('viewVar') => 'edit')), null, 'bundles/gloomypager/images/edit.png'), 'edit');
+            $this->_datagrid->addAction(new Action($this->trans('Edit'), $this->_request->get('_route'), array_merge($this->getConfig('addToURL'), array($this->getConfig('viewVar') => 'edit')), null, '#icon-pencil'), 'edit');
         }
         if ($this->getConfig('canDelete')) {
-            $this->_datagrid->addAction(new Action($this->trans('Delete'), $this->_request->get('_route'), array_merge($this->getConfig('addToURL'), array($this->getConfig('viewVar') => 'delete')), $this->trans('Confirm delete ?'), 'bundles/gloomypager/images/delete.png'), 'delete');
+            $this->_datagrid->addAction(new Action($this->trans('Delete'), $this->_request->get('_route'), array_merge($this->getConfig('addToURL'), array($this->getConfig('viewVar') => 'delete')), $this->trans('Confirm delete ?'), '#icon-remove'), 'delete');
         }
 
         if ($this->_session->hasFlash('crud_success')) {

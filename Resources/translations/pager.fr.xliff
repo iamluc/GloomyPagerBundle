@@ -46,6 +46,19 @@
                 <source>Not Null</source>
                 <target>Est non vide</target>
             </trans-unit>
+            
+            <trans-unit id="12">
+                <source>%first% to %last% on %total%</source>
+                <target>%first% à %last% sur %total%</target>
+            </trans-unit>
+            <trans-unit id="13">
+                <source>No data to display</source>
+                <target>Aucune donnée à afficher</target>
+            </trans-unit>
+            <trans-unit id="14">
+                <source>Refresh</source>
+                <target>Rafraichir</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
