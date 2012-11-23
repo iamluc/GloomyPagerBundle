@@ -121,57 +121,50 @@ class MongoDBWrapper extends QueryBuilderWrapper implements Wrapper
                     $criteria[]    = $expr->field($qualifier)->equals(new \MongoRegex('/.*'.$value.'.*/i'));
                     break;
 
-//                 case "nc":
-//                 case "notContains":
-//                     $criteria[]    = $expr->not($expr->like($qualifier, ':'.$paramName));
-//                     $this->_builder->setParameter($paramName, '%'.$value.'%');
-//                     break;
+                case "nc":
+                case "notContains":
+                    $criteria[]    = $expr->field($qualifier)->not(new \MongoRegex('/.*'.$value.'.*/i'));
+                    break;
 
                 case "e":
                 case "equals";
                     $criteria[]    = $expr->field($qualifier)->equals($value);
                     break;
 
-//                 case "ne":
-//                 case "notEquals":
-//                     $criteria[]    = $expr->neq($qualifier, ':'.$paramName);
-//                     $this->_builder->setParameter($paramName, $value);
-//                     break;
+                case "ne":
+                case "notEquals":
+                    $criteria[]    = $expr->field($qualifier)->notEqual($value);
+                    break;
 
-//                 case "g":
-//                 case "greater":
-//                     $criteria[]    = $expr->gt($qualifier, ':'.$paramName);
-//                     $this->_builder->setParameter($paramName, $value);
-//                     break;
+                case "g":
+                case "greater":
+                    $criteria[]    = $expr->field($qualifier)->gt($value);
+                    break;
 
-//                 case "ge":
-//                 case "greaterOrEquals":
-//                     $criteria[]    = $expr->gte($qualifier, ':'.$paramName);
-//                     $this->_builder->setParameter($paramName, $value);
-//                     break;
+                case "ge":
+                case "greaterOrEquals":
+                    $criteria[]    = $expr->field($qualifier)->gte($value);
+                    break;
 
-//                 case "l":
-//                 case "less":
-//                     $criteria[]    = $expr->lt($qualifier, ':'.$paramName);
-//                     $this->_builder->setParameter($paramName, $value);
-//                     break;
+                case "l":
+                case "less":
+                    $criteria[]    = $expr->field($qualifier)->lt($value);
+                    break;
 
-//                 case "le":
-//                 case "lessOrEquals":
-//                     $criteria[]    = $expr->lte($qualifier, ':'.$paramName);
-//                     $this->_builder->setParameter($paramName, $value);
-//                     break;
+                case "le":
+                case "lessOrEquals":
+                    $criteria[]    = $expr->field($qualifier)->lte($value);
+                    break;
 
                 case "n":
                 case "null":
                     $criteria[]    = $expr->field($qualifier)->exists(false);
-//                     $criteria[]    = $expr->isNull($qualifier);
                     break;
 
-//                 case "nn":
-//                 case "notNull":
-//                     $criteria[]    = $expr->isNotNull($qualifier);
-//                     break;
+                case "nn":
+                case "notNull":
+                    $criteria[]    = $expr->field($qualifier)->exists(true);
+                    break;
 
 //                 case "i":
 //                 case "in":
@@ -183,9 +176,6 @@ class MongoDBWrapper extends QueryBuilderWrapper implements Wrapper
 //                     break;
             }
         }
-
-//         var_dump($criteria);
-//         exit;
 
         if (empty($logical)) {
             $logical           = self::$logicalAND;
