@@ -122,7 +122,16 @@ class Field
                 $item = $item[$property];
             }
             else {
-                if (!$item = call_user_func_array(array($item, 'get'.ucfirst($property)), array())) {
+                if (method_exists($item, 'get'.ucfirst($property))) {
+                    $item = call_user_func_array(array($item, 'get'.ucfirst($property)), array());
+                }
+                else if (method_exists($item, 'is'.ucfirst($property))) {
+                    $item = call_user_func_array(array($item, 'is'.ucfirst($property)), array());
+                }
+                else if (method_exists($item, '__call')) {
+                    $item = call_user_func_array(array($item, 'get'.ucfirst($property)), array());
+                }
+                else {
                     return null;
                 }
             }
