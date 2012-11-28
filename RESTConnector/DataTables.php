@@ -73,11 +73,18 @@ class DataTables extends RESTBase
         $infos = $this->_pager->getPages();
 
         $datas = array();
+        $columns = array();
         foreach ($items as $obj) {
             $item = array();
             $cpt = 1;
             foreach ($fields as $field) {
-                $item[] = $field->readData($obj);
+                if (!$field->isVisible()) {
+                    continue;
+                }
+
+                $columns[$field->getProperty()] = $field->getLabel();
+
+                $item[] = (string) $field->readData($obj);
                 if ($cpt++ >= $nbColumns) {
                     break;
                 }
@@ -89,6 +96,7 @@ class DataTables extends RESTBase
                 "sEcho" => $this->_request->get('sEcho', 1),
                 "iTotalRecords" => $infos->totalItemCount,
                 "iTotalDisplayRecords" => $infos->totalItemCount,
+                "columns" => $columns, // debug
                 "aaData" => $datas
                 );
 
