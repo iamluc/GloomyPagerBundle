@@ -183,6 +183,7 @@
             <input  type="text"
                     id="input_filter_{{ id }}"
                     class="gloomy-filters {{ attributs|raw }} gloomy-filter-{{ type|default('string') }}"
+                    placeholder="{{ 'Filter...'|trans({}, 'pager') }}"
 
                     name="{{ filtersVar }}[v][{{ alias }}]"
                     value="{{ value }}"

@@ -59,6 +59,10 @@
                 <source>Refresh</source>
                 <target>Rafraichir</target>
             </trans-unit>
+            <trans-unit id="15">
+                <source>Filter...</source>
+                <target>Filtrer...</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
