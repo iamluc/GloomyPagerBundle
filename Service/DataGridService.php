@@ -23,8 +23,9 @@ class DataGridService {
     public function factory($pager, array $config = array(), $title = '')
     {
         if (!$pager instanceof Pager) {
-            $addToURL = isset($config['addToURL']) ? $config['addToURL'] : array();
-            $pager    = $this->_pager->factory($pager, null, array(), $addToURL);
+            $pagerConfig = isset($config['pagerConfig']) ? $config['pagerConfig'] : array();
+            $addToURL    = isset($config['addToURL']) ? $config['addToURL'] : array();
+            $pager       = $this->_pager->factory($pager, null, $pagerConfig, $addToURL);
         }
         return new DataGrid($this->_request, $this->_router, $pager, $config, $title);
     }
