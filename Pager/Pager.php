@@ -93,10 +93,10 @@ class Pager
         $filters            = $this->getValue('filtersVar');
         if (is_array($filters)) {
             $this->_wrapper->setFilters(
-                    $filters['f'],                                              // Alias of the field
-                    $filters['v'],                                              // Value
-                    array_key_exists('o', $filters) ? $filters['o'] : array(),  // Operator
-                    array_key_exists('l', $filters) ? $filters['l'] : array()   // Logical (AND/OR)
+                    isset($filters['f']) ? $filters['f'] : array(), // Alias of the field
+                    isset($filters['v']) ? $filters['v'] : array(), // Value
+                    isset($filters['o']) ? $filters['o'] : array(), // Operator
+                    isset($filters['l']) ? $filters['l'] : array()  // Logical (AND/OR)
             );
         }
 
