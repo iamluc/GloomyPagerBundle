@@ -146,7 +146,11 @@ INSTALLATION
 }
 ```
 
-### 2. Modify your app/AppKernel.php
+### 2. Run update
+
+    php composer.phar update gloomy/pager-bundle
+
+### 3. Modify your app/AppKernel.php
 
 ``` php
 <?php
@@ -157,6 +161,6 @@ INSTALLATION
     );
 ```
 
-### 3. Install assets (Optional)
+### 4. Install assets (Optional)
 
     php app/console assets:install web --symlink
