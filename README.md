@@ -1,17 +1,6 @@
 GloomyPagerBundle
 =================
 
-NEWS
-----
-
-- Added Crud on top of the DataGrid (Automatic Create/Retrieve/Update/Delete on Entities)
-- Added DataGrid on top of the Pager (Automatic pager templating)
-
-DEMO
-----
-**Test it on [our demo website](http://iamluc.legtux.org/web/demo1)**
-(You can download the demonstration website [on github](https://github.com/iamluc/DemoSite))
-
 ABOUT
 -----
 
@@ -44,7 +33,7 @@ The GloomyPagerBundle allows you to display datas with pagination, and to easily
 LICENSE
 -------
 
-LGPL v2
+MIT
 
 EXEMPLES
 --------
@@ -147,36 +136,27 @@ TWIG
 INSTALLATION
 ------------
 
-##1. Download the bundle
+### 1. Modify your composer.json
 
-**Using deps file**
-
-Add to deps file
-
-```
-[GloomyPagerBundle]
-    git=http://github.com/iamluc/GloomyPagerBundle
-    target=bundles/Gloomy/PagerBundle
+``` yaml
+{
+    "require": {
+        "gloomy/pager-bundle": "dev-master"
+    }
+}
 ```
 
-then run
+### 2. Modify your app/AppKernel.php
 
-    php bin/vendors install --reinstall
+``` php
+<?php
+    //...
+    $bundles = array(
+        //...
+        new Gloomy\PagerBundle\GloomyPagerBundle(),
+    );
+```
 
-**OR downloading from github**
+### 3. Install assets (Optional)
 
-Download the bundle ([https://github.com/iamluc/GloomyPagerBundle](https://github.com/iamluc/GloomyPagerBundle)) in vendor/bundles/Gloomy (create if not exists) and rename the folder to PagerBundle
-
-    You must have a tree similar to vendor/bundles/Gloomy/PagerBundle
-
-##2. Add to app/autoload.php :
-
-    'Gloomy'           => __DIR__.'/../vendor/bundles',
-
-##3. Add to app/AppKernel.php
-
-    new Gloomy\PagerBundle\GloomyPagerBundle(),
-
-##4. Install assets (Optional)
-
-    php app/console assets:install --symlink web
+    php app/console assets:install web --symlink
