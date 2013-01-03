@@ -14,17 +14,21 @@ The GloomyPagerBundle allows you to display datas with pagination, and to easily
 **Features of the Pager Wrappers (Array, Entity/ORM QueryBuilder) are :**
 - Advanced filtering (AND/OR);
 
->     $filters   = array( 'operator'    => 'and',
->                        'criteria'    => array( array(  'field' => 'job', 'operator' => 'contains', 'value' => 'Director' ),
->                                                array(  'operator'    => 'or',
->                                                        'criteria'    => array(
->                                                                array( 'field' => 'firstname', 'operator' => 'contains', 'value' => 'y' ),
->                                                                array( 'field' => 'moviesNb', 'operator' => 'less', 'value' => 30 ),
->
->                                                        )
->                                                    )
->                                                )
->                        );
+``` php
+<?php
+    //...
+    $filters   = array( 'operator'    => 'and',
+                        'criteria'    => array( array(  'field' => 'job', 'operator' => 'contains', 'value' => 'Director' ),
+                                                array(  'operator'    => 'or',
+                                                        'criteria'    => array(
+                                                                array( 'field' => 'firstname', 'operator' => 'contains', 'value' => 'y' ),
+                                                                array( 'field' => 'moviesNb', 'operator' => 'less', 'value' => 30 ),
+
+                                                        )
+                                                    )
+                                                )
+                        );
+```
 
 - Multiples ordering (order by lastname asc, firstname asc)
 - Ajax compatible
@@ -42,6 +46,9 @@ EXEMPLES
 
 PHP
 
+``` php
+<?php
+    //...
     /**
      * @Template()
      */
@@ -49,7 +56,8 @@ PHP
     {
         return $this->get('gloomy.crud')->factory('MyBundle:MyEntity')->handle();
     }
-    
+```
+
 TWIG
 
     {{ crud(crud) }}
@@ -58,6 +66,9 @@ TWIG
 
 PHP 
 
+``` php
+<?php
+    //...
     /**
      * @Template()
      */
@@ -65,6 +76,7 @@ PHP
     {
         return array('datagrid' => $this->get('gloomy.datagrid')->factory('MyBundle:MyEntity'));
     }
+```
 
 TWIG
 
@@ -74,6 +86,9 @@ TWIG
 
 PHP
 
+``` php
+<?php
+    //...
     /**
      * @Template()
      */
@@ -81,6 +96,7 @@ PHP
     {
         return array('pager' => $this->get('gloomy.pager')->factory('MyBundle:MyEntity'));
     }
+```
 
 TWIG
 
