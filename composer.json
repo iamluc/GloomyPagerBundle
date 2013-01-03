@@ -19,5 +19,6 @@
             "Gloomy\\PagerBundle": ""
         }
     },
+    "target-dir": "Gloomy/PagerBundle",
     "minimum-stability": "dev"
 }
