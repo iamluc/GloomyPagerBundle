@@ -2,7 +2,7 @@
     "name": "gloomy/pager-bundle",
     "description": "Paginator/datagrid/crud bundle for Symfony2 with advanced filtering & sorting",
     "type": "symfony-bundle",
-    "keywords": ["pager", "paging", "paginator", "pagination", "datagrid", "crud"],
+    "keywords": ["pager", "paging", "paginator", "pagination", "datagrid", "crud", "REST"],
     "homepage": "https://github.com/iamluc/GloomyPagerBundle",
     "license": "MIT",
     "authors": [
