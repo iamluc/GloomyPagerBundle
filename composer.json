@@ -1,5 +1,5 @@
 {
-    "name": "Gloomy/PagerBundle",
+    "name": "gloomy/pager-bundle",
     "description": "Paginator/datagrid/crud bundle for Symfony2 with advanced filtering & sorting",
     "type": "symfony-bundle",
     "keywords": ["pager", "paging", "paginator", "pagination", "datagrid", "crud"],
@@ -19,5 +19,6 @@
             "Gloomy\\PagerBundle": ""
         }
     },
-    "target-dir": "Gloomy/PagerBundle"
+    "target-dir": "Gloomy/PagerBundle",
+    "minimum-stability": "dev"
 }
