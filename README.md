@@ -152,21 +152,11 @@ TWIG
 INSTALLATION
 ------------
 
-### 1. Modify your composer.json
+### 1. Install with composer
 
-``` yaml
-{
-    "require": {
-        "gloomy/pager-bundle": "dev-master"
-    }
-}
-```
+    composer.phar require "gloomy/pager-bundle" "dev-master"
 
-### 2. Run update
-
-    php composer.phar update gloomy/pager-bundle
-
-### 3. Modify your app/AppKernel.php
+### 2. Modify your app/AppKernel.php
 
 ``` php
 <?php
@@ -177,6 +167,6 @@ INSTALLATION
     );
 ```
 
-### 4. Install assets (Optional)
+### 3. Install assets (Optional)
 
     php app/console assets:install web --symlink
