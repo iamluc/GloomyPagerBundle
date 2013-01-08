@@ -3,6 +3,7 @@
 namespace Gloomy\PagerBundle\Service;
 
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\DBAL\Query\QueryBuilder as DbalQB;
 
 use Gloomy\PagerBundle\Pager\Pager;
 

@@ -20,7 +20,7 @@ class Field
 
     protected $_visible;
 
-    public function __construct($property, $type = 'text', $label = '', $qualifier = null, $options = array())
+    public function __construct($property, $type = 'string', $label = '', $qualifier = null, $options = array())
     {
         $this->_property  = $property;
         $this->_type      = $type;

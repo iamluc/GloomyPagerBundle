@@ -94,8 +94,8 @@ function resetFilter( id ) {
 
 function submitEnter( event, input ) {
 
-	return true;
-    //if ( event && event.keyCode == 13 ) {
-    //	$(input.form).submit();
-    //}
+	//return true;
+    if ( event && event.keyCode == 13 ) {
+    	$(input.form).submit();
+    }
 }
