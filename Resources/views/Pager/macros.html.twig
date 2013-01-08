@@ -18,13 +18,13 @@
             {% endif %}
 
             {% if pager.pages.last == 0 %}
-                <li>
-                    <a {{ attributs|raw }} href="{{ pager.path(pager.pages.last) }}" class="active">{{ pager.pages.last }}</a>
+                <li class="active">
+                    <a {{ attributs|raw }} href="{{ pager.path(pager.pages.last) }}">{{ pager.pages.last }}</a>
                 </li>
             {% else %}
                 {% for page in pager.pages.pagesInRange %}
-                    <li>
-                        <a {{ attributs|raw }} href="{{ pager.path(page) }}" {% if page == pager.pages.current %}class="active"{% endif %}>{{ page }}</a>
+                    <li {% if page == pager.pages.current %}class="active"{% endif %}>
+                        <a {{ attributs|raw }} href="{{ pager.path(page) }}">{{ page }}</a>
                     </li>
                 {% endfor %}
             {% endif %}
