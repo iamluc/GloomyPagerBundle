@@ -7,11 +7,15 @@ function gloomyAjaxUpdater()
 
     var spinner     = options['spinner'] || null;
     var onsuccess   = options['onsuccess'] || function() {};
-
+    var type		= options['type'] || 'get';
+    var data		= options['data'] || null;
+    
     $(spinner).show();
     $.ajax({
               url: url,
               cache: false,
+              type: type,
+              data: data,
               success: function (html) {
                             $(div).html(html);
                             $(spinner).hide();
