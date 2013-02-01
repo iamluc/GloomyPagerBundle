@@ -48,6 +48,18 @@ class DbalQueryBuilderWrapper implements Wrapper
         return $this->_builder;
     }
 
+    public function setConfig($config)
+    {
+        $this->_config = $config;
+        return $this;
+    }
+
+    public function addConfig($key, $value)
+    {
+        $this->_config[$key] = $value;
+        return $this;
+    }
+
     public function count()
     {
         if (is_null($this->_count)) {
@@ -114,9 +126,9 @@ class DbalQueryBuilderWrapper implements Wrapper
             $value      = array_key_exists($key, $values) ? $values[$key] : '';
             if ('date' === $field->getType() && $value) {
                 $date   = \DateTime::createFromFormat($field->getDateFormat(), $value);
-                if ($date) {
-                    $value = $date->format('Y-m-d');
-                }
+//                 if ($date) {
+//                     $value = $date->format('Y-m-d');
+//                 }
             }
 
             $operator   = array_key_exists($key, $operators) ? $operators[$key] : 'contains';
@@ -132,13 +144,23 @@ class DbalQueryBuilderWrapper implements Wrapper
                 default:
                 case "c":
                 case "contains":
-                    $criteria[]    = $expr->like($qualifier, $paramName);
+                    if (isset($this->_config['force_case_insensitive'])) { // Force case insensitive (ie. for Oracle)
+                        $criteria[]    = $expr->comparison('UPPER('.$qualifier.')', 'LIKE', 'UPPER('.$paramName.')');
+                    }
+                    else {
+                        $criteria[]    = $expr->comparison($qualifier, 'LIKE', $paramName);
+                    }
                     $this->_builder->setParameter($paramName, '%'.$value.'%');
                     break;
 
                 case "nc":
                 case "notContains":
-                    $criteria[]    = $expr->comparison($qualifier, 'NOT LIKE', $paramName);
+                    if (isset($this->_config['force_case_insensitive'])) { // Force case insensitive (ie. for Oracle)
+                        $criteria[]    = $expr->comparison('UPPER('.$qualifier.')', 'NOT LIKE', 'UPPER('.$paramName.')');
+                    }
+                    else {
+                        $criteria[]    = $expr->comparison($qualifier, 'NOT LIKE', $paramName);
+                    }
                     $this->_builder->setParameter($paramName, '%'.$value.'%');
                     break;
 

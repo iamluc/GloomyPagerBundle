@@ -61,6 +61,18 @@ class QueryBuilderWrapper implements Wrapper
         return $this->_builder;
     }
 
+    public function setConfig($config)
+    {
+        $this->_config = $config;
+        return $this;
+    }
+
+    public function addConfig($key, $value)
+    {
+        $this->_config[$key] = $value;
+        return $this;
+    }
+
     public function count()
     {
         if (is_null($this->_count)) {
@@ -145,14 +157,26 @@ class QueryBuilderWrapper implements Wrapper
                 default:
                 case "c":
                 case "contains":
-                    $criteria[]    = $expr->like($qualifier, ':'.$paramName);
-                    $this->_builder->setParameter($paramName, '%'.$value.'%');
+                    if (isset($this->_config['force_case_insensitive'])) { // Force case insensitive (ie. for Oracle)
+                        $criteria[]    = $expr->like('UPPER('.$qualifier.')', ':'.$paramName);
+                        $this->_builder->setParameter($paramName, strtoupper('%'.$value.'%'));
+                    }
+                    else {
+                        $criteria[]    = $expr->like($qualifier, ':'.$paramName);
+                        $this->_builder->setParameter($paramName, '%'.$value.'%');
+                    }
                     break;
 
                 case "nc":
                 case "notContains":
-                    $criteria[]    = $expr->not($expr->like($qualifier, ':'.$paramName));
-                    $this->_builder->setParameter($paramName, '%'.$value.'%');
+                    if (isset($this->_config['force_case_insensitive'])) { // Force case insensitive (ie. for Oracle)
+                        $criteria[]    = $expr->not($expr->like('UPPER('.$qualifier.')', ':'.$paramName));
+                        $this->_builder->setParameter($paramName, strtoupper('%'.$value.'%'));
+                    }
+                    else {
+                        $criteria[]    = $expr->not($expr->like($qualifier, ':'.$paramName));
+                        $this->_builder->setParameter($paramName, '%'.$value.'%');
+                    }
                     break;
 
                 case "e":
