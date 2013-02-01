@@ -6,14 +6,24 @@ ABOUT
 
 The GloomyPagerBundle allows you to display datas with pagination, and to easily order and filter them.
 
-**3 services are availables :**
+**4 services are availables :**
 - Pager lets you manipulate ressources like Array or Entity, but you keep total control of your template.
-- DataGrid allows you to render a default template. But you can of course customize each parts of it. It sits on top of the Pager.
-- Crud adds create/edit/delete views in addition of the DataGrid view. It sits on top of the DataGrid.
+- DataGrid allows you to render a default template. But you can of course customize each parts of it. It builds on top of the Pager.
+- Crud adds create/edit/delete views in addition of the DataGrid view. It builds on top of the DataGrid.
+- REST Connectors lets you connect javascript grid or autocompleter easily (like jqGrid, DataTables, Autocomplete, Typeahead etc...)
 
-**Features of the Pager Wrappers (Array, Entity/ORM QueryBuilder) are :**
+**Features are :**
+- Many wrappers
+```
+    Array
+    Entity / ORM QueryBuilder
+    DBAL QueryBuilder
+    MongoDB
+    Datatheke.com
+    Null
+```
+
 - Advanced filtering (AND/OR);
-
 ``` php
 <?php
     //...
@@ -102,9 +112,7 @@ TWIG
 
     {% import 'GloomyPagerBundle:Pager:macros.html.twig' as helper %}
 
-    {% block contenu %}
-
-        {% block description %}{% endblock %}
+    {% block content %}
 
         <form action="{{ pager.pathForm() }}"
             method="post"
@@ -112,31 +120,30 @@ TWIG
             >
 
             <div class="content" >
-
                 <table class="gloomy-pager">
-                <thead>
-                    <tr>
-                        <th>{{ helper.orderBy( pager, 'firstname', 'Firstname' ) }}</th>
-                        <th>{{ helper.orderBy( pager, 'lastname', 'Lastname' ) }}</th>
-                        <th>{{ helper.orderBy( pager, 'job', 'Job' ) }}</th>
-                        <th>{{ helper.orderBy( pager, 'moviesNb', 'Number of movies' ) }}</th>
-                    </tr>
-                    <tr>
-                        <th>{{ helper.filter( pager, 'firstname' ) }}</th>
-                        <th>{{ helper.filter( pager, 'lastname' ) }}</th>
-                        <th>{{ helper.filter( pager, 'job' ) }}</th>
-                        <th>{{ helper.filter( pager, 'moviesNb' ) }}</th>
-                    </tr>
+                    <thead>
+                        <tr>
+                            <th>{{ helper.orderBy( pager, 'firstname', 'Firstname' ) }}</th>
+                            <th>{{ helper.orderBy( pager, 'lastname', 'Lastname' ) }}</th>
+                            <th>{{ helper.orderBy( pager, 'job', 'Job' ) }}</th>
+                            <th>{{ helper.orderBy( pager, 'moviesNb', 'Number of movies' ) }}</th>
+                        </tr>
+                        <tr>
+                            <th>{{ helper.filter( pager, 'firstname' ) }}</th>
+                            <th>{{ helper.filter( pager, 'lastname' ) }}</th>
+                            <th>{{ helper.filter( pager, 'job' ) }}</th>
+                            <th>{{ helper.filter( pager, 'moviesNb' ) }}</th>
+                        </tr>
                     </thead>
 
                     <tbody>
                         {% for person in pager.items %}
-                        <tr>
-                            <td>{{ person.firstname }}</td>
-                            <td>{{ person.lastname }}</td>
-                            <td>{{ person.job }}</td>
-                            <td>{{ person.moviesNb }}</td>
-                        </tr>
+                            <tr>
+                                <td>{{ person.firstname }}</td>
+                                <td>{{ person.lastname }}</td>
+                                <td>{{ person.job }}</td>
+                                <td>{{ person.moviesNb }}</td>
+                            </tr>
                         {% endfor %}
                     </tbody>
                 </table>
@@ -144,7 +151,6 @@ TWIG
                 {{ helper.paginate( pager ) }}
 
             </div>
-
         </form>
 
     {% endblock %}
