@@ -7,18 +7,14 @@
 
 
 {% block datagrid_stylesheets %}
-    <link href="{{ asset('bundles/gloomypager/libs/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('bundles/gloomypager/libs/bootstrap/css/bootstrap-responsive.min.css') }}" rel="stylesheet" type="text/css" />
-
-    <link href="{{ asset('bundles/gloomypager/css/gloomy-filters.css') }}" rel="stylesheet" type="text/css" />
+    {% import 'GloomyPagerBundle:Pager:macros.html.twig' as helper %}
+    {{ helper.stylesheets() }}
 {% endblock %}
 
 
 {% block datagrid_javascripts %}
-    <script src="{{ asset('bundles/gloomypager/libs/jquery/jquery-1.8.2.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('bundles/gloomypager/libs/bootstrap/js/bootstrap.min.js') }}" type="text/javascript"></script>
-
-    <script src="{{ asset('bundles/gloomypager/js/gloomy-filters.js') }}" type="text/javascript"></script>
+    {% import 'GloomyPagerBundle:Pager:macros.html.twig' as helper %}
+    {{ helper.javascripts() }}
 {% endblock %}
 
 
