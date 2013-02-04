@@ -209,7 +209,7 @@
                     name="{{ filtersVar }}[v][{{ alias }}]"
                     value="{{ value }}"
 
-                    onkeyup="filtersOptsChanged( '{{ id }}' ); submitEnter( event, this );"
+                    onkeyup="filtersOptsChanged( '{{ id }}' );"
                     onclick="showFiltersOpts( '{{ id }}' );"
                     onfocus="showFiltersOpts( '{{ id }}' );"
                     />
@@ -230,7 +230,7 @@
                         name="{{ filtersVar }}[o][{{ alias }}]"
 
                         onchange="filtersOptsChanged( '{{ id }}' )"
-                        onkeyup="submitEnter( event, this );">
+                        >
 
                     {% if type == 'string' or type == '' %}
                         <option value="contains" {% if operator == "contains" %}selected="selected"{% endif %}>{{ 'Contains'|trans([], 'pager') }}</options>

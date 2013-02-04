@@ -92,6 +92,7 @@ function resetFilter( id ) {
     filtersOptsChanged(id);
 }
 
+// Not used anymore
 function submitEnter( event, input ) {
 
 	//return true;
