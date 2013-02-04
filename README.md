@@ -70,11 +70,13 @@ PHP
 
 TWIG
 
+``` html+django
     {{ crud(crud) }}
+```
 
 ##Datagrid
 
-PHP 
+PHP
 
 ``` php
 <?php
@@ -90,7 +92,9 @@ PHP
 
 TWIG
 
+``` html+django
     {{ datagrid(datagrid) }}
+```
 
 ##Pager
 
@@ -110,6 +114,7 @@ PHP
 
 TWIG
 
+``` html+django
     {% import 'GloomyPagerBundle:Pager:macros.html.twig' as helper %}
 
     {% block content %}
@@ -154,6 +159,7 @@ TWIG
         </form>
 
     {% endblock %}
+```
 
 INSTALLATION
 ------------
