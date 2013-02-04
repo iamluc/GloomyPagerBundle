@@ -1,4 +1,4 @@
- A small exemple to explain how to make AJAX calls
+A small exemple to explain how to make AJAX calls
 
 PHP Controller
 ``` php

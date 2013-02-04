@@ -51,6 +51,7 @@ MIT
 
 EXEMPLES
 --------
+More exemples in the [documentation](https://github.com/iamluc/GloomyPagerBundle/tree/master/Resources/doc)
 
 ##Crud
 
@@ -115,49 +116,54 @@ PHP
 TWIG
 
 ``` html+django
+    {% extends "::base.html.twig" %}
+
     {% import 'GloomyPagerBundle:Pager:macros.html.twig' as helper %}
 
-    {% block content %}
+    {% block stylesheets %}
+        {{ parent() }}
+        {{ helper.stylesheets() }}
+    {% endblock %}
 
-        <form action="{{ pager.pathForm() }}"
-            method="post"
-            id="formPager"
-            >
+    {% block javascripts %}
+        {{ parent() }}
+        {{ helper.javascripts() }}
+    {% endblock %}
 
-            <div class="content" >
-                <table class="gloomy-pager">
-                    <thead>
+    {% block body %}
+        <form action="{{ pager.pathForm() }}" method="post">
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>{{ helper.orderBy( pager, 'firstname', 'Firstname' ) }}</th>
+                        <th>{{ helper.orderBy( pager, 'lastname', 'Lastname' ) }}</th>
+                        <th>{{ helper.orderBy( pager, 'job', 'Job' ) }}</th>
+                        <th>{{ helper.orderBy( pager, 'moviesNb', 'Number of movies' ) }}</th>
+                    </tr>
+                    <tr>
+                        <th>{{ helper.filter( pager, 'firstname' ) }}</th>
+                        <th>{{ helper.filter( pager, 'lastname' ) }}</th>
+                        <th>{{ helper.filter( pager, 'job' ) }}</th>
+                        <th>{{ helper.filter( pager, 'moviesNb' ) }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for person in pager.items %}
                         <tr>
-                            <th>{{ helper.orderBy( pager, 'firstname', 'Firstname' ) }}</th>
-                            <th>{{ helper.orderBy( pager, 'lastname', 'Lastname' ) }}</th>
-                            <th>{{ helper.orderBy( pager, 'job', 'Job' ) }}</th>
-                            <th>{{ helper.orderBy( pager, 'moviesNb', 'Number of movies' ) }}</th>
+                            <td>{{ person.firstname }}</td>
+                            <td>{{ person.lastname }}</td>
+                            <td>{{ person.job }}</td>
+                            <td>{{ person.moviesNb }}</td>
                         </tr>
-                        <tr>
-                            <th>{{ helper.filter( pager, 'firstname' ) }}</th>
-                            <th>{{ helper.filter( pager, 'lastname' ) }}</th>
-                            <th>{{ helper.filter( pager, 'job' ) }}</th>
-                            <th>{{ helper.filter( pager, 'moviesNb' ) }}</th>
-                        </tr>
-                    </thead>
+                    {% endfor %}
+                </tbody>
+            </table>
 
-                    <tbody>
-                        {% for person in pager.items %}
-                            <tr>
-                                <td>{{ person.firstname }}</td>
-                                <td>{{ person.lastname }}</td>
-                                <td>{{ person.job }}</td>
-                                <td>{{ person.moviesNb }}</td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+            {# Allows submitting filters with 'Enter' #}
+            <input type="image" src="{{ asset('bundles/gloomypager/img/transparent.gif') }}" height="0" width="0" border="0">
 
-                {{ helper.paginate( pager ) }}
-
-            </div>
+            {{ helper.paginate( pager ) }}
         </form>
-
     {% endblock %}
 ```
 

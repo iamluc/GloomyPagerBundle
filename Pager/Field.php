@@ -62,6 +62,17 @@ class Field
         return $this->_label;
     }
 
+    public function addOption($key, $value)
+    {
+        $this->_options[$key] = $value;
+        return $this;
+    }
+
+    public function getOption($key)
+    {
+        return $this->_options[$key];
+    }
+
     public function setOptions($options)
     {
         $this->_options = $options;
