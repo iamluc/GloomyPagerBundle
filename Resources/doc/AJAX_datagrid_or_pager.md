@@ -27,7 +27,7 @@ class DefaultController extends Controller
             array('id' => 7, 'color' => 'grey'),
             array('id' => 8, 'color' => 'white'),
             array('id' => 9, 'color' => 'pink'),
-            array('id' => 10, 'color' => 'wood'),
+            array('id' => 10, 'color' => 'cyan'),
             array('id' => 11, 'color' => 'maroon'),
             );
 
