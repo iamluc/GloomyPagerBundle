@@ -63,12 +63,15 @@ class DbalQueryBuilderWrapper implements Wrapper
     public function count()
     {
         if (is_null($this->_count)) {
-            $builder        = clone $this->_builder;
-            $this->_count   = $builder
+
+            $countBuilder = clone $this->_builder;
+            $this->_count = $countBuilder
+                ->resetQueryParts(array('select', 'from', 'join', 'set', 'where', 'groupBy', 'having', 'orderBy'))
                 ->select('count(1)')
-                ->resetQueryPart('orderBy')
+                ->from('('.$this->_builder->getSQL().')', 'Q')
                 ->execute()
-                    ->fetchColumn();
+                    ->fetchColumn()
+            ;
         }
 
         return $this->_count;
