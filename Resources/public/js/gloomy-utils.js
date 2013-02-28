@@ -60,6 +60,7 @@ function gloomyAjaxUpdaterDialog()
     return ( false );
 }
 
+// jQuery-ui Dialog
 function gloomyAjaxDialogAction()
 {
     var dialog      = arguments[0];
@@ -98,6 +99,57 @@ function gloomyAjaxDialogAction()
                             else {
                                 $.jGrowl('Le formulaire comporte des erreurs', {theme: 'warning'});
                                 $(dialog).html(data);
+                            	onformerror();
+                            }
+                        },
+              error: function () {
+                            $(spinner).hide();
+                            $.jGrowl('Une erreur est survenue', {theme: 'error'});
+                        }
+    });
+    return ( false );
+}
+
+// Twitter Bootstrap Modal
+function gloomyAjaxModalAction()
+{
+    var modal       = arguments[0];
+    var options     = arguments[1] || {};
+
+    var form        = options['form'] || $(modal).find('form:first');
+    var spinner     = options['spinner'] || null;
+    var onsuccess   = options['onsuccess'] || function() {};
+    var onformerror = options['onformerror'] || function() {};
+    var body        = options['body'] || $(modal).find('.modal-body:first');
+
+    $(spinner).show();
+    $.ajax({type: 'POST',
+              url: $(form).attr('action'),
+              data: $(form).serializeArray(),
+
+              success: function (data, textStatus, jqXHR) {
+
+                            $(spinner).hide();
+
+                            // La réponse est du JSON
+                            if (typeof(data) == 'object' && jqXHR.getResponseHeader( "content-type" ).indexOf('json') != -1) {
+                                try {
+                                    if (data['success']) {
+                                        $(modal).modal( "hide" );
+                                        onsuccess();
+                                        $.jGrowl(data['message'], {theme: 'success'});
+                                    }
+                                    else {
+                                        $.jGrowl(data['message'], {theme: 'error'});
+                                    }
+                                }
+                                catch (e) {
+                                    $.jGrowl('Une erreur est survenue', {theme: 'error'});
+                                }
+                            }
+                            else {
+                                $.jGrowl('Le formulaire comporte des erreurs', {theme: 'warning'});
+                                $(body).html(data);
                             	onformerror();
                             }
                         },
