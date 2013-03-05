@@ -168,9 +168,13 @@ function gloomyAjaxAction()
 
     var spinner     = options['spinner'] || null;
     var onsuccess   = options['onsuccess'] || function() {};
-
+    var type		= options['type'] || 'get';
+    var data		= options['data'] || null;
+    
     $(spinner).show();
     $.ajax({  url: url,
+		      type: type,
+		      data: data,
               success: function (data) { // La réponse est normalement toujours en JSON
                             $(spinner).hide();
                             if (data['success']) {
