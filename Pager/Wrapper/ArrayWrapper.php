@@ -163,7 +163,8 @@ class ArrayWrapper implements Wrapper
 
     protected function checkCondition($itemValue, $operator, $filterValue)
     {
-        $keep       = false;
+        $keep        = false;
+        $filterValue = $field->formatInput($filterValue);
 
         if (is_string($filterValue) && ! strlen($filterValue) && ! in_array($operator, array("null", "notNull", "n", "nn"))) {
             return null;

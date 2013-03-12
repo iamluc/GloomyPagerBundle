@@ -68,6 +68,11 @@ class Field
         return $this;
     }
 
+    public function hasOption($key)
+    {
+        return array_key_exists($key, $this->_options);
+    }
+
     public function getOption($key)
     {
         return $this->_options[$key];
@@ -153,5 +158,14 @@ class Field
         }
 
         return $item;
+    }
+
+    public function formatInput($input)
+    {
+        if ($this->hasOption('inputformater')) {
+            return $this->_options['inputformater']($input);
+        }
+
+        return $input;
     }
 }

@@ -93,6 +93,7 @@ class MongoDBWrapper extends QueryBuilderWrapper implements Wrapper
             $operator   = array_key_exists($key, $operators) ? $operators[$key] : 'contains';
 
             $value      = array_key_exists($key, $values) ? $values[$key] : '';
+            $value      = $field->formatInput($value);
             if ('date' === $field->getType() && $value) {
                 $date   = \DateTime::createFromFormat($field->getDateFormat(), $value);
                 if ($date) {

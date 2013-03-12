@@ -137,6 +137,7 @@ class QueryBuilderWrapper implements Wrapper
             $qualifier  = $field->getQualifier();
 
             $value      = array_key_exists($key, $values) ? $values[$key] : '';
+            $value      = $field->formatInput($value);
             if ('date' === $field->getType() && $value) {
                 $date   = \DateTime::createFromFormat($field->getDateFormat(), $value);
                 if ($date) {

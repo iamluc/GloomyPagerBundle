@@ -127,11 +127,10 @@ class DbalQueryBuilderWrapper implements Wrapper
             $qualifier  = $field->getQualifier();
 
             $value      = array_key_exists($key, $values) ? $values[$key] : '';
+            $value      = $field->formatInput($value);
+
             if ('date' === $field->getType() && $value) {
                 $date   = \DateTime::createFromFormat($field->getDateFormat(), $value);
-//                 if ($date) {
-//                     $value = $date->format('Y-m-d');
-//                 }
             }
 
             $operator   = array_key_exists($key, $operators) ? $operators[$key] : 'contains';
@@ -215,20 +214,40 @@ class DbalQueryBuilderWrapper implements Wrapper
 
                 case "i":
                 case "in":
-                    if ( ! is_array( $value ) ) {
+                    if (!is_array($value)) {
                         $value     = preg_split("/((\r(?!\n))|((?<!\r)\n)|(\r\n))/", $value, -1, PREG_SPLIT_NO_EMPTY);
                     }
-                    $criteria[]    = $expr->comparison($qualifier, 'IN', $paramName);
-                    $this->_builder->setParameter($paramName, $value);
+
+                    $inParams      = array();
+                    $inParamsIndex = 0;
+                    foreach ($value as $val) {
+                        $inParams[] = $paramName.'_'.$inParamsIndex++;
+                    }
+                    $criteria[]    = $expr->comparison($qualifier, 'IN', '('.join(',', $inParams).')');
+
+                    $z = 0;
+                    foreach ($value as $val) {
+                        $this->_builder->setParameter($paramName.'_'.$z++, $val);
+                    }
                     break;
 
                 case "ni":
                 case "notIn":
-                    if ( ! is_array( $value ) ) {
+                    if (!is_array($value)) {
                         $value     = preg_split("/((\r(?!\n))|((?<!\r)\n)|(\r\n))/", $value, -1, PREG_SPLIT_NO_EMPTY);
                     }
-                    $criteria[]    = $expr->comparison($qualifier, 'NOT IN', $paramName);
-                    $this->_builder->setParameter($paramName, $value);
+
+                    $inParams      = array();
+                    $inParamsIndex = 0;
+                    foreach ($value as $val) {
+                        $inParams[] = $paramName.'_'.$inParamsIndex++;
+                    }
+                    $criteria[]    = $expr->comparison($qualifier, 'NOT IN', '('.join(',', $inParams).')');
+
+                    $z = 0;
+                    foreach ($value as $val) {
+                        $this->_builder->setParameter($paramName.'_'.$z++, $val);
+                    }
                     break;
             }
         }
