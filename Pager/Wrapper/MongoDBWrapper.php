@@ -48,10 +48,6 @@ class MongoDBWrapper extends QueryBuilderWrapper implements Wrapper
             ->getQuery()
             ->execute();
 
-        if ($result instanceof \Doctrine\MongoDB\ArrayIterator) {
-            echo "tada !";
-            exit;
-        }
         return $result;
     }
 
