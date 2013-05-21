@@ -25,7 +25,8 @@ class DataGridService {
         if (!$pager instanceof Pager) {
             $pagerConfig = isset($config['pagerConfig']) ? $config['pagerConfig'] : array();
             $addToURL    = isset($config['addToURL']) ? $config['addToURL'] : array();
-            $pager       = $this->_pager->factory($pager, null, $pagerConfig, $addToURL);
+            $route       = isset($config['route']) ? $config['route'] : null;
+            $pager       = $this->_pager->factory($pager, $route, $pagerConfig, $addToURL);
         }
         return new DataGrid($this->_request, $this->_router, $pager, $config, $title);
     }

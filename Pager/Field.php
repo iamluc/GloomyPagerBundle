@@ -30,9 +30,21 @@ class Field
         $this->_visible   = true;
     }
 
+    public function setProperty($property)
+    {
+        $this->_property = $property;
+        return $this;
+    }
+
     public function getProperty()
     {
         return $this->_property;
+    }
+
+    public function setQualifier($qualifier)
+    {
+        $this->_qualifier = $qualifier;
+        return $this;
     }
 
     public function getQualifier()
