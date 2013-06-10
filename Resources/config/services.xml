@@ -86,9 +86,5 @@
         	<tag name="twig.extension" />
             <argument type="service" id="router" />
         </service>
-
-        <service id="gloomy.serializer.pager_handler" class="Gloomy\PagerBundle\Serializer\Handler\GloomyPagerHandler">
-            <tag name="jms_serializer.subscribing_handler" />
-        </service>
     </services>
 </container>
