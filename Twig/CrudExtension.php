@@ -64,7 +64,7 @@ class CrudExtension extends \Twig_Extension
         $this->_themes->attach($crud, $resources);
     }
 
-    protected function render($crud, $block, $params = array())
+    protected function render($crud, $block, array $params = array())
     {
         $templates = array(self::$defaultTheme);
         if (isset($this->_themes[$crud])) {
