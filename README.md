@@ -4,13 +4,13 @@ GloomyPagerBundle
 ABOUT
 -----
 
-The GloomyPagerBundle allows you to display datas with pagination, and to easily order and filter them.
+The GloomyPagerBundle allows you to display data with pagination, and to easily order and filter them.
 
-**4 services are availables :**
-- Pager lets you manipulate ressources like Array or Entity, but you keep total control of your template.
-- DataGrid allows you to render a default template. But you can of course customize each parts of it. It builds on top of the Pager.
-- Crud adds create/edit/delete views in addition of the DataGrid view. It builds on top of the DataGrid.
-- REST Connectors lets you connect javascript grid or autocompleter easily (like jqGrid, DataTables, Autocomplete, Typeahead etc...)
+**4 services are available :**
+- Pager lets you manipulate resources like an Array or an Entity, but you keep total control of your template.
+- DataGrid allows you to render a default template. But you can of course customize each part of it. It's built on top of the Pager.
+- Crud adds create/edit/delete views in addition of the DataGrid view. It's built on top of the DataGrid.
+- REST Connectors let you connect to a JavaScript grid or autocompleter easily (like jqGrid, DataTables, Autocomplete, Typeahead etc...)
 
 **Features are :**
 - Many wrappers
@@ -40,9 +40,9 @@ The GloomyPagerBundle allows you to display datas with pagination, and to easily
                         );
 ```
 
-- Multiples ordering (order by lastname asc, firstname asc)
+- Multiple ordering (order by lastname asc, firstname asc)
 - Ajax compatible
-- Many pager on the same page
+- Many pagers on the same page
 
 LICENSE
 -------
