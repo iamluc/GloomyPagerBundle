@@ -44,6 +44,9 @@ class QueryBuilderWrapper implements Wrapper
             foreach ($metas->fieldMappings as $property => $infos) {
                 $this->addField(new Field($property, $infos['type'], null, $alias.'.'.$property));
             }
+            foreach ($metas->associationMappings as $property => $infos) {
+                $this->addField(new Field($property, $infos['type'], null, $alias.'.'.$property));
+            }
         }
     }
 
