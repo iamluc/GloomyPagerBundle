@@ -29,6 +29,10 @@ class ArrayWrapper implements Wrapper
 
     protected function populateFields()
     {
+        if (empty($this->_array)) {
+            return;
+        }
+
         foreach (current($this->_array) as $key => $val) {
             $this->_fields[$key] = new Field($key);
         }
