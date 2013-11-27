@@ -41,39 +41,38 @@ class FormService {
         $responseOptions    = array_merge($this->defaultResponseOptions, $responseOptions);
         $message            = null;
 
-        $em                 = $this->_doctrine->getEntityManager();
+        $em                 = $this->_doctrine->getManager();
         $form               = $this->_formFactory->create($type, $data, $options);
         $request            = $this->_request;
 
-        if ($request->getMethod() === 'POST') {
-            $form->bindRequest($request);
-            if ($form->isValid()) {
-                $em->persist($data);
-                $em->flush();
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $em->persist($data);
+            $em->flush();
 
-                switch ($responseType) {
-                    case 'json':
-                        $message    = array(
-                            'success'    => true,
-                            'message'    => $responseOptions['success']
-                        );
-                        return new Response(json_encode($message), $responseOptions['status'], array('Content-type' => 'application/json'));
-                        break;
+            switch ($responseType) {
+                case 'json':
+                    $message    = array(
+                        'success'    => true,
+                        'message'    => $responseOptions['success']
+                    );
+                    return new Response(json_encode($message), $responseOptions['status'], array('Content-type' => 'application/json'));
+                    break;
 
-                    case 'redirect':
-                        return new RedirectResponse($responseOptions['url'], $responseOptions['redirectStatus']);
-                        break;
+                case 'redirect':
+                    return new RedirectResponse($responseOptions['url'], $responseOptions['redirectStatus']);
+                    break;
 
-                    default:
-                    case 'html':
-                        $message    = $responseOptions['success'];
-                        break;
-                }
-            }
-            else {
-                $message    = $responseOptions['error'];
+                default:
+                case 'html':
+                    $message    = $responseOptions['success'];
+                    break;
             }
         }
+        else {
+            $message    = $responseOptions['error'];
+        }
+
         return array('form' => $form->createView(), 'item' => $data, 'action' => 'create', 'message' => $message);
     }
 
@@ -82,7 +81,7 @@ class FormService {
         $responseOptions    = array_merge($this->defaultResponseOptions, $responseOptions);
         $message            = null;
 
-        $em                 = $this->_doctrine->getEntityManager();
+        $em                 = $this->_doctrine->getManager();
         if (is_array($data)) {
             $data           = $em->getRepository($data[0])->find($data[1]);
         }
@@ -108,33 +107,31 @@ class FormService {
         $form          = $this->_formFactory->create($type, $data, $options);
         $request       = $this->_request;
 
-        if ($request->getMethod() === 'POST') {
-            $form->bindRequest($request);
-            if ($form->isValid()) {
-                $em->flush();
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $em->flush();
 
-                switch ($responseType) {
-                    case 'json':
-                        $message    = array(
-                            'success'    => true,
-                            'message'    => $responseOptions['success']
-                        );
-                        return new Response(json_encode($message), 200, array('Content-type' => 'application/json'));
-                        break;
+            switch ($responseType) {
+                case 'json':
+                    $message    = array(
+                        'success'    => true,
+                        'message'    => $responseOptions['success']
+                    );
+                    return new Response(json_encode($message), 200, array('Content-type' => 'application/json'));
+                    break;
 
-                    case 'redirect':
-                        return new RedirectResponse($responseOptions['url'], $responseOptions['redirectStatus']);
-                        break;
+                case 'redirect':
+                    return new RedirectResponse($responseOptions['url'], $responseOptions['redirectStatus']);
+                    break;
 
-                    default:
-                    case 'html':
-                        $message    = $responseOptions['success'];
-                        break;
-                }
+                default:
+                case 'html':
+                    $message    = $responseOptions['success'];
+                    break;
             }
-            else {
-                $message    = $responseOptions['error'];
-            }
+        }
+        else {
+            $message    = $responseOptions['error'];
         }
 
         return array('form' => $form->createView(), 'item' => $data, 'action' => 'edit', 'message' => $message);
@@ -145,7 +142,7 @@ class FormService {
         $responseOptions    = array_merge($this->defaultResponseOptions, $responseOptions);
         $message            = null;
 
-        $em                 = $this->_doctrine->getEntityManager();
+        $em                 = $this->_doctrine->getManager();
         if (is_array($data)) {
             $data           = $em->getRepository($data[0])->find($data[1]);
         }

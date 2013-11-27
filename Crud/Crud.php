@@ -79,11 +79,11 @@ class Crud
 
         // Entity
         list($bundle, $entity) = $this->parseShortcutNotation($entity);
-        $this->_entityClass = $this->_doctrine->getEntityNamespace($bundle).'\\'.$entity;
+        $this->_entityClass = $this->_doctrine->getAliasNamespace($bundle).'\\'.$entity;
 
         // EntityType
         list($bundle, $entityType) = $this->parseShortcutNotation($entityType);
-        $entityTypeClass   = $this->_doctrine->getEntityNamespace($bundle);
+        $entityTypeClass   = $this->_doctrine->getAliasNamespace($bundle);
         $parts             = explode('\\', $entityTypeClass);
         array_pop($parts);
         $this->_entityTypeClass = implode('\\', $parts).'\\Form\\'.$entityType;
@@ -215,11 +215,11 @@ class Crud
             $this->_datagrid->addAction(new Action($this->trans('Delete'), $this->_request->get('_route'), array_merge($this->getConfig('addToURL'), array($this->getConfig('viewVar') => 'delete')), $this->trans('Confirm delete ?'), '#icon-remove'), 'delete');
         }
 
-        if ($this->_session->hasFlash('crud_success')) {
-            $this->_datagrid->addNotification(new Notification($this->_session->getFlash('crud_success'), 'success'));
+        foreach ($this->_session->getFlashBag()->get('crud_success') as $notification) {
+            $this->_datagrid->addNotification(new Notification($notification, 'success'));
         }
-        if ($this->_session->hasFlash('crud_error')) {
-            $this->_datagrid->addNotification(new Notification($this->_session->getFlash('crud_error'), 'error'));
+        foreach ($this->_session->getFlashBag()->get('crud_error') as $notification) {
+            $this->_datagrid->addNotification(new Notification($notification, 'error'));
         }
     }
 
@@ -234,7 +234,7 @@ class Crud
         $this->_formDatas = $this->_form->create(new $this->_entityTypeClass, new $this->_entityClass, array(), 'redirect', $options);
 
         if ($this->_formDatas instanceof Response) {
-            $this->_session->setFlash('crud_success', $this->trans('Creation successful'));
+            $this->_session->getFlashBag()->add('crud_success', $this->trans('Creation successful'));
             return $this->_formDatas;
         }
         return array('crud' => $this);
@@ -246,7 +246,7 @@ class Crud
         $this->_formDatas = $this->_form->edit(new $this->_entityTypeClass, array($this->_entity, $id), array(), 'redirect', $options);
 
         if ($this->_formDatas instanceof Response) {
-            $this->_session->setFlash('crud_success', $this->trans('Edition successful'));
+            $this->_session->getFlashBag()->add('crud_success', $this->trans('Edition successful'));
             return $this->_formDatas;
         }
         return array('crud' => $this);
@@ -258,7 +258,7 @@ class Crud
         $this->_formDatas = $this->_form->delete(array($this->_entity, $id), 'redirect', $options);
 
         if ($this->_formDatas instanceof Response) {
-            $this->_session->setFlash('crud_success', $this->trans('Delete successful'));
+            $this->_session->getFlashBag()->add('crud_success', $this->trans('Delete successful'));
         }
         return $this->_formDatas;
     }
