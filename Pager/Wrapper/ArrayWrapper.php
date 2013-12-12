@@ -29,6 +29,10 @@ class ArrayWrapper implements Wrapper
 
     protected function populateFields()
     {
+        if (empty($this->_array)) {
+            return;
+        }
+
         foreach (current($this->_array) as $key => $val) {
             $this->_fields[$key] = new Field($key);
         }
@@ -102,7 +106,7 @@ class ArrayWrapper implements Wrapper
             $itemValue       = $row[$alias];
             $filterOperator  = array_key_exists($key, $operators) ? $operators[$key] : 'contains';
             $filterValue     = array_key_exists($key, $values) ? $values[$key] : '';
-
+            $filterValue     = $field->formatInput($filterValue);
             $criteria[]      = $this->checkCondition($itemValue, $filterOperator, $filterValue);
         }
 
@@ -164,7 +168,6 @@ class ArrayWrapper implements Wrapper
     protected function checkCondition($itemValue, $operator, $filterValue)
     {
         $keep        = false;
-        $filterValue = $field->formatInput($filterValue);
 
         if (is_string($filterValue) && ! strlen($filterValue) && ! in_array($operator, array("null", "notNull", "n", "nn"))) {
             return null;
@@ -243,7 +246,7 @@ class ArrayWrapper implements Wrapper
     protected function getField($alias)
     {
         if (array_key_exists($alias, $this->_fields)) {
-            return $this->_fields[$alias]->getQualifier();;
+            return $this->_fields[$alias];
         }
         throw new \Exception('Unknown alias '.$alias);
     }
