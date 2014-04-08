@@ -4,6 +4,12 @@ GloomyPagerBundle
 ABOUT
 -----
 
+> Note:
+
+> This bundle has been replaced by the [DatathekePagerBundle](https://github.com/datatheke/DatathekePagerBundle)
+
+> You should use it instead
+
 The GloomyPagerBundle allows you to display data with pagination, and to easily order and filter them.
 
 **4 services are available :**
